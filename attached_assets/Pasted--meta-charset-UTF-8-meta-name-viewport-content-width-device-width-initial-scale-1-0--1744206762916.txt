@@ -1,0 +1,2030 @@
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قدراتك - نظام اختبارات القدرات</title>
+    <style>
+        /* التنسيقات العامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            direction: rtl;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* تنسيقات تسجيل الدخول */
+        .login-box {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .login-box p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-success {
+            background-color: #2ecc71;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .register-link {
+            margin-top: 20px;
+            color: #7f8c8d;
+        }
+
+        .register-link a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* تنسيقات لوحة التحكم */
+        .dashboard {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        /* تنسيقات اختبارات الطلاب */
+        .test-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .test-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .test-card p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        /* تنسيقات الاختبار المخصص */
+        .custom-test-setup {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .custom-test-setup .form-group {
+            margin-bottom: 15px;
+        }
+
+        .custom-test-setup input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #startCustomTestBtn {
+            margin-top: 20px;
+            background-color: #2ecc71;
+        }
+
+        #cancelCustomTestBtn {
+            margin-top: 10px;
+            background-color: #e74c3c;
+        }
+
+        /* تنسيقات صفحة الاختبار */
+        .test-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .question-section {
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            text-align: right;
+            transition: all 0.3s;
+        }
+
+        .option-btn:hover {
+            background-color: #eee;
+        }
+
+        .option-btn.correct {
+            background-color: #2ecc71;
+            color: white;
+            border-color: #2ecc71;
+        }
+
+        .option-btn.wrong {
+            background-color: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        .option-btn.selected {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .timer-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .section-info {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* تنسيقات صفحة النتائج */
+        .results-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .result-card {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .result-card.passed {
+            background-color: #e8f5e9;
+            border: 2px solid #2ecc71;
+        }
+
+        .result-card.failed {
+            background-color: #ffebee;
+            border: 2px solid #e74c3c;
+        }
+
+        .result-card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .result-emoji {
+            font-size: 60px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .score-section {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .score-box {
+            text-align: center;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .score-box h3 {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .score-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .success-message {
+            color: #2ecc71;
+            text-align: center;
+            font-size: 18px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .retry-message {
+            color: #e74c3c;
+            text-align: center;
+            font-size: 18px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .details-btn {
+            display: block;
+            margin: 20px auto 0;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* زر العودة للرئيسية */
+        #backToDashboardBtn {
+            background-color: #3498db;
+            margin-top: 15px;
+        }
+
+        /* تنسيقات لوحة التحكم للإدمن */
+        .admin-panel {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background-color: #f9f9f9;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            margin-left: 5px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .question-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .option-group {
+            position: relative;
+        }
+
+        .remove-option-btn {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-option-btn {
+            margin-bottom: 15px;
+        }
+
+        .questions-list {
+            margin-top: 20px;
+        }
+
+        .question-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+
+        .question-item h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .question-item p {
+            margin-bottom: 10px;
+            color: #7f8c8d;
+        }
+
+        .question-actions {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .edit-btn {
+            margin-left: 10px;
+        }
+
+        /* تأثيرات النجاح */
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background-color: #f0f;
+            animation: confetti 3s ease-out forwards;
+            z-index: 1000;
+        }
+
+        /* تأثيرات الرسوب */
+        .sad-effect {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 100px;
+            color: white;
+        }
+
+        /* تنسيقات responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .user-info {
+                margin-bottom: 10px;
+            }
+            
+            .test-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .score-section {
+                flex-direction: column;
+            }
+            
+            .score-box {
+                width: 100%;
+            }
+            
+            .result-emoji {
+                font-size: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .result-card h2 {
+                font-size: 20px;
+            }
+            
+            .score-value {
+                font-size: 20px;
+            }
+            
+            .login-box, .dashboard, .admin-panel, .test-container, .results-container {
+                padding: 15px;
+                margin: 10px;
+            }
+        }
+    </style>
+
+
+    <div class="container" id="mainContainer">
+        
+    </div>
+
+    <script>
+        // بيانات التطبيق
+        const App = {
+            currentUser: null,
+            currentTest: null,
+            testQuestions: [],
+            currentQuestionIndex: 0,
+            currentSection: 1,
+            userAnswers: [],
+            score: 0,
+            timer: null,
+            timeLeft: 0,
+            sectionTimeLeft: 0,
+            accumulatedTime: 0,
+            
+            // تهيئة التطبيق
+            init: function() {
+                this.initializeData();
+                this.checkLoginStatus();
+                this.setupEventListeners();
+            },
+            
+            // تهيئة البيانات الأولية
+            initializeData: function() {
+                // تهيئة المستخدمين إذا لم يكونوا موجودين
+                if (!localStorage.getItem('qodratak_users')) {
+                    const defaultUsers = [
+                        { 
+                            id: 1, 
+                            phone: "0532441566", 
+                            password: "admin123", 
+                            name: "مدير النظام", 
+                            isAdmin: true, 
+                            registrationDate: new Date().toISOString() 
+                        },
+                        { 
+                            id: 2, 
+                            phone: "0555555555", 
+                            password: "user123", 
+                            name: "طالب تجريبي", 
+                            isAdmin: false, 
+                            registrationDate: new Date().toISOString() 
+                        },
+                        { 
+                            id: 3, 
+                            phone: "0567326086", 
+                            password: "user123", 
+                            name:" الطالب أحمد ", 
+                            isAdmin: false, 
+                            registrationDate: new Date().toISOString() 
+                        },
+                    ];
+                    localStorage.setItem('qodratak_users', JSON.stringify(defaultUsers));
+                }
+                
+                // تهيئة الأسئلة إذا لم تكن موجودة
+                if (!localStorage.getItem('qodratak_questions')) {
+                    const defaultQuestions = {
+                        quantitative: [
+                        ],
+                        verbal: [
+                        {
+                            id: 3,
+                            text: "كثيرا ما نوجه أسهم النقد للآخرين ونادرا ما تكون نحونا، وهذا لأننا اعتدنا محاسبة الآخرين على الأقوال والأفعال وأحيانا على النوايا، ونتناسى محاسبة أنفسنا، فالنقد البناء هو ما كان بعيداً عن الهوى والتعصب والأحكام المسبقة ، بل لابد أن يكون هناك تجرد وإنصاف ومحاولة بناء نقدك على أصول شرعية أو عقلية كي ينضبط الأمر لديك. يميل الكاتب في النص إلى ...............",
+                            options: ["تنمية روح النقد البناء", "نقد الآخرين على كل شيء", "محاسبة الآخرين على الأقوال لا الأفعال", "اتباع الهوى في توجيه النقد"],
+                            correctAnswer: 0,
+                            difficulty: "easy",
+                            section: 1
+                        },
+                        {
+                            id: 4,
+                            text: "كثيرا ما نوجه أسهم النقد للآخرين ونادرا ما تكون نحونا، وهذا لأننا اعتدنا محاسبة الآخرين على الأقوال والأفعال وأحيانا على النوايا، ونتناسى محاسبة أنفسنا، فالنقد البناء هو ما كان بعيداً عن الهوى والتعصب والأحكام المسبقة ، بل لابد أن يكون هناك تجرد وإنصاف ومحاولة بناء نقدك على أصول شرعية أو عقلية كي ينضبط الأمر لديك. وفقا للنص فلكي يكون النقد هادفا لابد أن يستند إلى ...............",
+                            options: ["المصالح الشخصية", "محاسبة المقصرين", "المنفعة المؤقتة", "أصول شرعية وعقلية تضبطه"],
+                            correctAnswer: 3,
+                            difficulty: "easy",
+                            section: 1
+                        },
+                        {
+                            id: 5,
+                            text: "البلاستيدات الخضراء هي عضيات في النبات وهي المسؤولة عن عملية البناء الضوئي. أي الآتي صحيح؟",
+                            options: ["العضيات هي التي تقوم بعملية البناء الضوئي", "البلاستيدات الخضراء هي جزء في التماثل الضوئي", "العضيات مسئولة عن تكوين البلاستيدات الخضراء", "العضيات جزء من البلاستيدات الخضراء"],
+                            correctAnswer: 0,
+                            difficulty: "easy",
+                            section: 1
+                        },
+                        {
+                            id: 6,
+                            text: "فائدة الاشجار لا تتوقف على منتجاتها فهي تحافظ على البيئة. يفهم من النص أن :",
+                            options: ["الأشجار مفيدة للبيئة فقط", "الأشجار مفيدة لمنتجاتها فقط", "الأشجار مفيدة لمنتجاتها والبيئة", "الأشجار غير مفيدة للبيئة"],
+                            correctAnswer: 2,
+                            difficulty: "easy",
+                            section: 3
+                        },
+                        {
+                            id: 7,
+                            text: "إن الفقر له آثاره السلبية التي لا حصر لها على المجتمعات، إلا أن الخطر الأكبر للفقر يكمن في تأثيراته السلبية على التعليم؛ حيث نجد المواطن الفقير يركز جُلَّ أولوياته لسد احتياجاته الأساسية من مأكل ومشرب وملبس ودواء، وهو الأمر الذي لا يجعله ينظر إلى التعليم على أنه ضرورة للحياة لا بد منها. ما علاقة الفقر بالتعليم ؟",
+                            options: ["إيجابي غير مباشر", "إيجابي مباشر", "سلبي مباشر", "سلبي غير مباشر"],
+                            correctAnswer: 2,
+                            difficulty: "easy",
+                            section: 1
+                        },
+                        {
+                            id: 8,
+                            text: "إن الفقر له آثاره السلبية التي لا حصر لها على المجتمعات، إلا أن الخطر الأكبر للفقر يكمن في تأثيراته السلبية على التعليم؛ حيث نجد المواطن الفقير يركز جُلَّ أولوياته لسد احتياجاته الأساسية من مأكل ومشرب وملبس ودواء، وهو الأمر الذي لا يجعله ينظر إلى التعليم على أنه ضرورة للحياة لا بد منها. (سد احتياجاته) تعني ...............",
+                            options: ["تطوير مهاراته", "توفير وسائل الترفيه", "توفير متطلبات الحياة الأساسية", "توفير النقود للمستقبل"],
+                            correctAnswer: 2,
+                            difficulty: "easy",
+                            section: 1
+                        },
+                        {
+                            id: 9,
+                            text: "الرياضة المنتظمة يمكنها أن تحمي العين من تردي البصر مع تَقّدّم العمر. يفهم من العبارة أن:",
+                            options: ["الرياضة المنتظمة مفيدة لجميع الأعمار", "الرياضة المنتظمة وقاية وليست علاجًا", "علاج تردي البصر يصعب مع تقدّم العمر", "الرياضة عموماً تحمي العين من تردي البصر"],
+                            correctAnswer: 1,
+                            difficulty: "easy",
+                            section: 1
+                        },
+                        {
+                            id: 10,
+                            text: "لا يمكن للإنسان أن يصعد مرة واحدة لأهدافه، ولكن يجب أن يصعد خطوة خطوة. يفهم من النص أن من طبيعة الإنسان ...............",
+                            options: ["التفاخر", "النقص", "التعجل", "التردي"],
+                            correctAnswer: 2,
+                            difficulty: "easy",
+                            section: 1
+                        },
+                        {
+                            id: 11,
+                            text: "لا يمكن للإنسان أن يصعد مرة واحدة لأهدافه، ولكن يجب أن يصعد خطوة خطوة. الفكرة الرئيسة للنص هي ...............",
+                            options: ["التكاسل", "النجاح", "التردد", "التدرج"],
+                            correctAnswer: 3,
+                            difficulty: "easy",
+                            section: 1
+                        },
+                        {
+                            id: 12,
+                            text: "تناول المكسرات يقلل نسبة الإصابة بالسرطان ب15% ومرض الزهايمر أيضا بنسبة 30%. يفهم من النص أن تناول المكسرات .............",
+                            options: ["يقتل الفيروسات", "يزيد الإصابة بالسرطان", "يعمل كمضاد حيوي", "يساهم في الوقاية من السرطان"],
+                            correctAnswer: 3,
+                            difficulty: "easy",
+                            section: 1
+                        },
+                        {
+                            id: 13,
+                            text: "احتل الدُّخْن – بتشديد الدال وضمها، مع تسكين الخاء – المرتبة السادسة عشر بين النباتات الأكثر استهلاكا في العالم أنه العنصر الرئيسي في النظام الغذائي لبعض الناس فهي تحتوي على العديد من فيتامينات التي لا تحتويها النباتات الأخرى فهو من الحبوب الكاملة يحتوي على نفس كمية البروتين الموجودة في القمح، وهو غني بالألياف مما يساعد على سهولة الهضم، ويستخدم كعاقد للمعدة مما يساعد على سهولة الهضم، ويستخدم كذلك كعلف للحيوانات ، وله العديد من الأنواع، ومنها: الدخن اللؤلؤي، ودخن ذيل الثعلب أو الدخن الإيطالي، ودخن بروسو، ودخن الإصبع.، ويحتوي الدخن على نحو 10% من وزنه بروتين و 4% من وزنه دهن، فهو من الحبوب التي ليس فيها نشويات قابلة للتخمر، لذا ينصح به دائما لمرضى حساسية القمح، كذلك فهو مفيد وخافض للسكري إذ أنه خالي من الجلوتين ولكنه ليس علاجا له. يتضح من النص أن الدخن",
+                            options: ["غير صحي", "فائدته لا تقتصر على الإنسان فقط", "فائدته الغذائية قليلة", "مفيد للحيوانات دون الإنسان"],
+                            correctAnswer: 1,
+                            difficulty: "medium",
+                            section: 2
+                        },
+                        {
+                            id: 14,
+                            text: "احتل الدُّخْن – بتشديد الدال وضمها، مع تسكين الخاء – المرتبة السادسة عشر بين النباتات الأكثر استهلاكا في العالم أنه العنصر الرئيسي في النظام الغذائي لبعض الناس فهي تحتوي على العديد من فيتامينات التي لا تحتويها النباتات الأخرى فهو من الحبوب الكاملة يحتوي على نفس كمية البروتين الموجودة في القمح، وهو غني بالألياف مما يساعد على سهولة الهضم، ويستخدم كعاقد للمعدة مما يساعد على سهولة الهضم، ويستخدم كذلك كعلف للحيوانات ، وله العديد من الأنواع، ومنها: الدخن اللؤلؤي، ودخن ذيل الثعلب أو الدخن الإيطالي، ودخن بروسو، ودخن الإصبع.، ويحتوي الدخن على نحو 10% من وزنه بروتين و 4% من وزنه دهن، فهو من الحبوب التي ليس فيها نشويات قابلة للتخمر، لذا ينصح به دائما لمرضى حساسية القمح، كذلك فهو مفيد وخافض للسكري إذ أنه خالي من الجلوتين ولكنه ليس علاجا له. وفقا للنص فإن الدخن :",
+                            options: ["لا ينصح به لمرضى حساسية القمح", "ليس له فائدة صحية تذكر", "لا يستخدمه المرضى لأنه يحتوي على الجلوتين", "يستخدمه المرضى لأنه خالي من الجلوتين"],
+                            correctAnswer: 3,
+                            difficulty: "medium",
+                            section: 2
+                        },
+                        {
+                            id: 15,
+                            text: "القهوة تساعد على زيادة التركيز، ولكنها تسبب الصداع بسبب احتوائها على مادة استيل كوليين في الكافيين. أي من الآتي يتفق وما ورد بالنص ؟",
+                            options: ["القهوة هي المصدر الوحيد للكافيين", "القهوة تزيد التركيز وتقلل الصداع", "القهوة تسبب الصداع", "يمكن التحكم في كمية المادة المفروزة"],
+                            correctAnswer: 2,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 16,
+                            text: "لا تخلو الحياة من المخاوف، لكن إياك أن تخشى المستقبل فيكون عبئا وحملا ثقيلا عليك لا تستطيع تحمله. ما الذي تعنيه الجُملة ؟",
+                            options: ["المستقبل لا يمكن تحمله", "الخوف أمر مشروع", "المشاعر تتحكم بالحياة", "الأعباء ضرورية للحياة"],
+                            correctAnswer: 1,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 17,
+                            text: "تنظيف وتبييض الاسنان وغسل الأسنان المتكرر يؤثر عليها مع مرور الزمن ، فهو يؤثر على المينا ويؤثر على الاسنان. يفهم من النص أن تنظيف الأسنان مع مرور الزمن",
+                            options: ["يضعف المينا وبالتالي الأسنان", "يحمي الأسنان", "يقوي المينا", "ليس له تأثير سلبي"],
+                            correctAnswer: 0,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 18,
+                            text: "لا فرق بين الصابون العادي والمنظفات الأخرى، فالمهم طول مدة تنظيف ودعك اليد. أي من الآتي يتفق وما ورد بالنص ؟",
+                            options: ["الصابون أقوى المنظفات في إزالة البكتريا", "هناك فروق حيوية بين الصابون والمنظفات الأخرى", "طريقة دعك الصابون هي التي تزيل البكتريا", "المنظفات الغالية ذات تأثير قوي على البكتريا"],
+                            correctAnswer: 2,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 19,
+                            text: "الجراد هو حشرة عدوها الأول ما هو أخضر تعمل على تدمير المحاصيل الزراعية ويمكن القضاء عليها بالرش بالمبيدات الحشرية. (ما هو أخضر) الواردة بالنص تعني .............",
+                            options: ["الجبال الخضراء", "أنها تكره اللون الأخضر", "النباتات", "الأزهار"],
+                            correctAnswer: 2,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 20,
+                            text: "في نهاية القرن التاسع عشر أثبت العلماء أنّ صورة البصمة لأيِّ إصبع من الأصابع تعيش مع صاحبها طوال حياته؛ فهذه الصورة لا تتغيَّر رغم الطوارئ التي تصيب الشَّخص على مرِّ الزَّمن، مثلا : وجد العلماء أنَّ إحدى المومياوات المصريّة المحنَّطة احتفظت ببصماتها بوضوح رغم مرور قرون كثيرة على تحنيطها. الفكرة الرئيسة للنص هي ..........",
+                            options: ["خيبة أمل العلماء بعد الاكتشاف", "طوارئ الأحداث تؤثر على البصمات", "تردد العلماء من ظهور الاكتشاف", "بصمات الأصابع لا تتغير مع تقدم العمر"],
+                            correctAnswer: 3,
+                            difficulty: "medium",
+                            section: 2
+                        },
+                        {
+                            id: 21,
+                            text: "المناطق المنخفضة تحصل على الماء المتساقط من الأماكن العالية، فإذا أردت أن تتقدم قوم عليك أن تكون خلفهم، وإن تضع نفسك أسفلهم تعلوهم. يحث النص على..................",
+                            options: ["الكرم", "التأني", "الشجاعة", "التواضع"],
+                            correctAnswer: 3,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 22,
+                            text: "رغم الاختلاف الواضح في فصول السنة الأربعة إلا أننا نجد أشخاصا يفضلون فصلا عن البقية. المقولة التي تتماشى مع النص ..............",
+                            options: ["التردد أمر سلبي", "التصالح مع النفس", "اختلاف فصول السنة", "للناس فيما يعشقون مذاهب"],
+                            correctAnswer: 3,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 23,
+                            text: "واصل السير في طريقك بعد أن تحقق النجاح فلن يسألك أحدا عن سرعتك فيه، ولكن الأهم ألا تبطيء من خطواتك. الكاتب يحث على ............",
+                            options: ["النقد البناء", "التفاؤل", "تقييم الآخرين", "الاصرار"],
+                            correctAnswer: 3,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 24,
+                            text: "المشكلات التي تواجهنا في جميع مجالات الحياة أمر طبيعي وجلُّ المشكلات التي تحدث لنا هي من جراء الفَجْوة بين واقعنا الذي نعيشُه، وطموحنا الذي نريد أنْ نَصِلَ إليه، فوجود مشكلة في الحياة ليست كارثة من الكوارث إنَّما المهم هو موقفنا منها وردود أفعالنا نحوها بعد مواجهتها لا التهرب منها. يفهم من النص أن أمثل طريقة لحل المشكلة ...........",
+                            options: ["عدم التفكير فيها", "الهروب منها", "التجربة والخطأ", "مواجهتها"],
+                            correctAnswer: 3,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 25,
+                            text: "عندما يُهاجم الصقر من قِبل الغربان فإنه لا يتعارك معها ولكنه يرتفع ويحلق في مستوى أعلى منهم ، عليك أن تكون كذلك في معاملاتك. يحث النص على ............",
+                            options: ["الترفع عن الدناءات", "الاعتبار بالآخرين", "حب الخير", "المثل العُليا"],
+                            correctAnswer: 0,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 26,
+                            text: "عليك أن تتقبّل حقيقة أنّ ما حدث قد حدث وأنّه لا يمكنك تغيير الماضي، لكن بإمكانك صنع المستقبل. تحث العبارة على ...............",
+                            options: ["الاستسلام", "الركون", "التفكير في الغد", "نقد الذات"],
+                            correctAnswer: 2,
+                            difficulty: "easy",
+                            section: 2
+                        },
+                        {
+                            id: 27,
+                            text: "الذَرّة التي تستطيع أن تدمر مدينة بكاملها وتمحو كل أثر للحياة فيها هي نفسها يمكننا أن نستخدمها في آلات ومعدات زراعية وصناعية أو شق قنوات وأنفاق. الفكرة العامة للنص هي أن ......................",
+                            options: ["الذرة مفيدة دائما", "الذرة بلا فائدة حسنة", "تعاملنا مع الأشياء يصنع الفارق", "الذرة قوتها التدميرية عالية"],
+                            correctAnswer: 2,
+                            difficulty: "easy",
+                            section: 2
+                        }
+                    ],
+                };
+                    localStorage.setItem('qodratak_questions', JSON.stringify(defaultQuestions));
+                }
+                
+                // تهيئة نتائج الطلاب إذا لم تكن موجودة
+                if (!localStorage.getItem('qodratak_studentResults')) {
+                    localStorage.setItem('qodratak_studentResults', JSON.stringify({}));
+                }
+            },
+            
+            // التحقق من حالة تسجيل الدخول
+            checkLoginStatus: function() {
+                const loggedInUser = localStorage.getItem('qodratak_loggedInUser');
+                if (loggedInUser) {
+                    this.currentUser = JSON.parse(loggedInUser);
+                    this.showDashboard();
+                } else {
+                    this.showLoginPage();
+                }
+            },
+            
+            // إعداد مستمعي الأحداث
+            setupEventListeners: function() {
+                document.addEventListener('click', (e) => {
+                    if (e.target.id === 'loginBtn') this.handleLogin();
+                    if (e.target.id === 'registerBtn') this.showRegisterPage();
+                    if (e.target.id === 'logoutBtn') this.handleLogout();
+                    if (e.target.id === 'backToLoginBtn') this.showLoginPage();
+                    if (e.target.id === 'addQuestionBtn') this.showAddQuestionForm();
+                    if (e.target.classList.contains('option-btn')) this.handleAnswerSelection(e.target);
+                    if (e.target.id === 'nextQuestionBtn') this.nextQuestion();
+                    if (e.target.id === 'finishTestBtn') this.finishTest();
+                    if (e.target.id === 'viewDetailsBtn') this.showDetailedResults();
+                    if (e.target.classList.contains('tab-btn')) this.handleTabSwitch(e.target);
+                    if (e.target.classList.contains('add-option-btn')) this.addOptionField();
+                    if (e.target.classList.contains('remove-option-btn')) this.removeOptionField(e.target);
+                    if (e.target.id === 'submitQuestionBtn') this.submitQuestion();
+                    if (e.target.classList.contains('start-test-btn')) this.startTest(e.target.dataset.testType);
+                    if (e.target.classList.contains('delete-question-btn')) this.deleteQuestion(e.target);
+                    if (e.target.id === 'nextTestBtn') this.startNextTest();
+                    if (e.target.id === 'retryTestBtn') this.retryTest();
+                    if (e.target.id === 'backToDashboardBtn') this.showDashboard();
+                    if (e.target.id === 'startCustomTestBtn') this.startCustomTest();
+                    if (e.target.id === 'cancelCustomTestBtn') this.showStudentDashboard();
+                    if (e.target.id === 'tryDemoBtn') this.tryDemo();
+                });
+                
+                document.addEventListener('submit', (e) => {
+                    if (e.target.id === 'loginForm') {
+                        e.preventDefault();
+                        this.handleLogin();
+                    }
+                    if (e.target.id === 'registerForm') {
+                        e.preventDefault();
+                        this.handleRegistration();
+                    }
+                    if (e.target.id === 'questionForm') {
+                        e.preventDefault();
+                        this.submitQuestion();
+                    }
+                });
+            },
+            
+            // عرض صفحة تسجيل الدخول
+            showLoginPage: function() {
+                const loginHTML = `
+                    <div class="login-box">
+                        <h1>قدراتك</h1>
+                        <p>نظام اختبارات القدرات الكمية واللفظية</p>
+                        
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label for="phone">رقم الجوال:</label>
+                                <input type="text" id="phone" placeholder="ادخل رقم الجوال" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">كلمة المرور:</label>
+                                <input type="password" id="password" placeholder="ادخل كلمة المرور" required>
+                            </div>
+                            <button type="submit" class="btn" id="loginBtn">تسجيل الدخول</button>
+                        </form>
+                        
+                        <p class="register-link">ليس لديك حساب؟ <a href="#" id="registerBtn">سجل الآن</a></p>
+                        <p class="register-link">تريد تجربة النظام؟ <a href="#" id="tryDemoBtn">الدخول كضيف</a></p>
+                    </div>
+                `;
+                document.getElementById('mainContainer').innerHTML = loginHTML;
+            },
+            
+            // عرض صفحة التسجيل
+            showRegisterPage: function() {
+                const registerHTML = `
+                    <div class="login-box">
+                        <h1>تسجيل حساب جديد</h1>
+                        
+                        <form id="registerForm">
+                            <div class="form-group">
+                                <label for="regName">الاسم الكامل:</label>
+                                <input type="text" id="regName" placeholder="ادخل اسمك الكامل" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="regPhone">رقم الجوال:</label>
+                                <input type="text" id="regPhone" placeholder="ادخل رقم الجوال" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="regPassword">كلمة المرور:</label>
+                                <input type="password" id="regPassword" placeholder="ادخل كلمة المرور" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="regConfirmPassword">تأكيد كلمة المرور:</label>
+                                <input type="password" id="regConfirmPassword" placeholder="أعد إدخال كلمة المرور" required>
+                            </div>
+                            <button type="submit" class="btn" id="registerBtn">تسجيل الحساب</button>
+                        </form>
+                        
+                        <p class="register-link">لديك حساب بالفعل؟ <a href="#" id="backToLoginBtn">تسجيل الدخول</a></p>
+                    </div>
+                `;
+                document.getElementById('mainContainer').innerHTML = registerHTML;
+            },
+            
+            // معالجة تسجيل الدخول
+            handleLogin: function() {
+                const phone = document.getElementById('phone').value;
+                const password = document.getElementById('password').value;
+                
+                const users = JSON.parse(localStorage.getItem('qodratak_users'));
+                const user = users.find(u => u.phone === phone && u.password === password);
+                
+                if (user) {
+                    this.currentUser = user;
+                    localStorage.setItem('qodratak_loggedInUser', JSON.stringify(user));
+                    this.showDashboard();
+                } else {
+                    alert('رقم الجوال أو كلمة المرور غير صحيحة');
+                }
+            },
+            
+            // معالجة التسجيل
+            handleRegistration: function() {
+                const name = document.getElementById('regName').value;
+                const phone = document.getElementById('regPhone').value;
+                const password = document.getElementById('regPassword').value;
+                const confirmPassword = document.getElementById('regConfirmPassword').value;
+                
+                if (password !== confirmPassword) {
+                    alert('كلمة المرور وتأكيدها غير متطابقين');
+                    return;
+                }
+                
+                let users = JSON.parse(localStorage.getItem('qodratak_users')) || [];
+                
+                if (users.some(u => u.phone === phone)) {
+                    alert('هذا الرقم مسجل بالفعل');
+                    return;
+                }
+                
+                const newUser = {
+                    id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+                    name,
+                    phone,
+                    password,
+                    isAdmin: false,
+                    registrationDate: new Date().toISOString()
+                };
+                
+                users.push(newUser);
+                localStorage.setItem('qodratak_users', JSON.stringify(users));
+                
+                // تسجيل الدخول تلقائياً بعد التسجيل
+                this.currentUser = newUser;
+                localStorage.setItem('qodratak_loggedInUser', JSON.stringify(newUser));
+                
+                alert('تم تسجيل الحساب بنجاح!');
+                this.showStudentDashboard();
+            },
+            
+            // الدخول كضيف
+            tryDemo: function() {
+                this.currentUser = {
+                    id: 0,
+                    name: "ضيف",
+                    phone: "0000000000",
+                    isAdmin: false
+                };
+                this.showStudentDashboard();
+            },
+            
+            // عرض لوحة التحكم
+            showDashboard: function() {
+                if (this.currentUser.isAdmin) {
+                    this.showAdminDashboard();
+                } else {
+                    this.showStudentDashboard();
+                }
+            },
+            
+            // عرض لوحة تحكم الطالب
+            showStudentDashboard: function() {
+                const dashboardHTML = `
+                    <div class="dashboard">
+                        <div class="header">
+                            <div class="user-info">
+                                <img src="https://via.placeholder.com/40" alt="صورة المستخدم">
+                                <h2>مرحباً، ${this.currentUser.name}</h2>
+                            </div>
+                            <button class="btn btn-danger" id="logoutBtn">تسجيل الخروج</button>
+                        </div>
+                        
+                        <h3>اختر نوع الاختبار:</h3>
+                        <div class="test-options">
+                            <div class="test-card">
+                                <h3>اختبار قصير (67 سؤال)</h3>
+                                <p>7 أقسام - 11 سؤال لكل قسم (آخر قسمين 6 أسئلة)</p>
+                                <button class="btn start-test-btn" data-test-type="short">بدء الاختبار</button>
+                            </div>
+                            <div class="test-card">
+                                <h3>اختبار قياس (120 سؤال)</h3>
+                                <p>7 أقسام - أول 3 أقسام 24 سؤال، آخر 4 أقسام متغيرة</p>
+                                <button class="btn start-test-btn" data-test-type="full">بدء الاختبار</button>
+                            </div>
+                            <div class="test-card">
+                                <h3>اختبار تجريبي مخصص</h3>
+                                <p>اختر عدد الأسئلة الكمية واللفظية</p>
+                                <button class="btn start-test-btn" data-test-type="custom">بدء اختبار مخصص</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('mainContainer').innerHTML = dashboardHTML;
+            },
+            
+            // عرض لوحة تحكم الإدمن
+            showAdminDashboard: function() {
+                const dashboardHTML = `
+                    <div class="admin-panel">
+                        <div class="header">
+                            <div class="user-info">
+                                <img src="https://via.placeholder.com/40" alt="صورة المستخدم">
+                                <h2>لوحة التحكم - ${this.currentUser.name}</h2>
+                            </div>
+                            <button class="btn btn-danger" id="logoutBtn">تسجيل الخروج</button>
+                        </div>
+                        
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="addQuestion">إضافة سؤال</button>
+                            <button class="tab-btn" data-tab="manageQuestions">إدارة الأسئلة</button>
+                            <button class="tab-btn" data-tab="viewResults">عرض النتائج</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="addQuestion">
+                            <form id="questionForm">
+                                <div class="form-group">
+                                    <label for="questionType">نوع السؤال:</label>
+                                    <select id="questionType" required>
+                                        <option value="quantitative">كمي</option>
+                                        <option value="verbal">لفظي</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="questionDifficulty">صعوبة السؤال:</label>
+                                    <select id="questionDifficulty" required>
+                                        <option value="easy">سهل</option>
+                                        <option value="medium">متوسط</option>
+                                        <option value="hard">صعب</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="questionSection">القسم:</label>
+                                    <select id="questionSection" required>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="questionText">نص السؤال:</label>
+                                    <textarea id="questionText" required></textarea>
+                                </div>
+                                <div id="optionsContainer">
+                                    <div class="form-group option-group">
+                                        <label>الخيار 1:</label>
+                                        <input type="text" class="option-input" required>
+                                        <button type="button" class="remove-option-btn">حذف</button>
+                                    </div>
+                                    <div class="form-group option-group">
+                                        <label>الخيار 2:</label>
+                                        <input type="text" class="option-input" required>
+                                        <button type="button" class="remove-option-btn">حذف</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn add-option-btn">إضافة خيار</button>
+                                <div class="form-group">
+                                    <label for="correctAnswer">الإجابة الصحيحة:</label>
+                                    <select id="correctAnswer" required>
+                                        <option value="0">1</option>
+                                        <option value="1">2</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success" id="submitQuestionBtn">حفظ السؤال</button>
+                            </form>
+                        </div>
+                        
+                        <div class="tab-content" id="manageQuestions">
+                            <div class="questions-list" id="questionsList"></div>
+                        </div>
+                        
+                        <div class="tab-content" id="viewResults">
+                            <h3>إحصائيات النتائج</h3>
+                            <div id="resultsStats"></div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('mainContainer').innerHTML = dashboardHTML;
+                this.loadQuestionsList();
+                this.loadResultsStats();
+            },
+            
+            // عرض واجهة الاختبار المخصص
+            showCustomTestSetup: function() {
+                const setupHTML = `
+                    <div class="login-box">
+                        <h1>إنشاء اختبار مخصص</h1>
+                        
+                        <div class="form-group">
+                            <label for="quantitativeCount">عدد الأسئلة الكمية:</label>
+                            <input type="number" id="quantitativeCount" min="1" max="50" value="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="verbalCount">عدد الأسئلة اللفظية:</label>
+                            <input type="number" id="verbalCount" min="1" max="50" value="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="testDuration">مدة الاختبار (دقائق):</label>
+                            <input type="number" id="testDuration" min="5" max="180" value="30">
+                        </div>
+                        
+                        <button class="btn" id="startCustomTestBtn">بدء الاختبار</button>
+                        <button class="btn btn-danger" id="cancelCustomTestBtn">إلغاء</button>
+                    </div>
+                `;
+                document.getElementById('mainContainer').innerHTML = setupHTML;
+            },
+            
+            // بدء الاختبار المخصص
+            startCustomTest: function() {
+                const quantitativeCount = parseInt(document.getElementById('quantitativeCount').value);
+                const verbalCount = parseInt(document.getElementById('verbalCount').value);
+                const duration = parseInt(document.getElementById('testDuration').value);
+                
+                this.currentTest = 'custom';
+                this.currentQuestionIndex = 0;
+                this.currentSection = 1;
+                this.score = 0;
+                this.userAnswers = [];
+                this.accumulatedTime = 0;
+                this.sectionTimeLeft = duration * 60;
+                
+                // توليد الأسئلة المخصصة
+                const questions = JSON.parse(localStorage.getItem('qodratak_questions'));
+                
+                // الحصول على أسئلة عشوائية
+                const shuffledQuantitative = [...questions.quantitative].sort(() => 0.5 - Math.random());
+                const shuffledVerbal = [...questions.verbal].sort(() => 0.5 - Math.random());
+                
+                this.testQuestions = [
+                    ...shuffledQuantitative.slice(0, quantitativeCount),
+                    ...shuffledVerbal.slice(0, verbalCount)
+                ];
+                
+                // خلط الأسئلة
+                this.testQuestions = this.testQuestions.sort(() => 0.5 - Math.random());
+                
+                if (this.testQuestions.length === 0) {
+                    alert('لا توجد أسئلة متاحة للاختبار المحدد');
+                    return;
+                }
+                
+                this.showTestPage();
+                this.startTimer();
+            },
+            
+            // بدء الاختبار
+            startTest: function(testType) {
+                if (testType === 'custom') {
+                    this.showCustomTestSetup();
+                    return;
+                }
+                
+                this.currentTest = testType;
+                this.currentQuestionIndex = 0;
+                this.currentSection = 1;
+                this.score = 0;
+                this.userAnswers = [];
+                this.accumulatedTime = 0;
+                
+                // توليد الأسئلة حسب نوع الاختبار
+                if (testType === 'short') {
+                    this.testQuestions = this.generateShortTestQuestions();
+                    this.sectionTimeLeft = 11 * 60; // 11 دقائق لكل قسم (11 سؤال × 1 دقيقة)
+                } else {
+                    this.testQuestions = this.generateFullTestQuestions();
+                    this.sectionTimeLeft = 24 * 60; // 24 دقيقة للأقسام الأولى (24 سؤال × 1 دقيقة)
+                }
+                
+                if (this.testQuestions.length === 0) {
+                    alert('لا توجد أسئلة متاحة للاختبار المحدد');
+                    return;
+                }
+                
+                this.showTestPage();
+                this.startTimer();
+            },
+            
+            // توليد أسئلة الاختبار القصير
+            generateShortTestQuestions: function() {
+                const allQuestions = [];
+                const questions = JSON.parse(localStorage.getItem('qodratak_questions'));
+                
+                // الأقسام من 1 إلى 5 (11 سؤال لكل قسم)
+                for (let section = 1; section <= 5; section++) {
+                    // 6 أسئلة لفظية
+                    const verbalQuestions = this.getRandomQuestions(questions.verbal, 'easy', 6, section);
+                    // 5 أسئلة كمية
+                    const quantitativeQuestions = this.getRandomQuestions(questions.quantitative, 'easy', 5, section);
+                    
+                    allQuestions.push(...verbalQuestions, ...quantitativeQuestions);
+                }
+                
+                // القسم 6 و7 (6 أسئلة لكل قسم)
+                for (let section = 6; section <= 7; section++) {
+                    // 4 أسئلة لفظية
+                    const verbalQuestions = this.getRandomQuestions(questions.verbal, 'easy', 4, section);
+                    // 2 أسئلة كمية
+                    const quantitativeQuestions = this.getRandomQuestions(questions.quantitative, 'easy', 2, section);
+                    
+                    allQuestions.push(...verbalQuestions, ...quantitativeQuestions);
+                }
+                
+                return allQuestions;
+            },
+            
+            // توليد أسئلة اختبار قياس كامل
+            generateFullTestQuestions: function() {
+                const allQuestions = [];
+                const questions = JSON.parse(localStorage.getItem('qodratak_questions'));
+                
+                // الأقسام من 1 إلى 3 (24 سؤال لكل قسم)
+                for (let section = 1; section <= 3; section++) {
+                    // 13 سؤال لفظي
+                    const verbalQuestions = this.getRandomQuestions(questions.verbal, 'easy', 13, section);
+                    // 11 سؤال كمي
+                    const quantitativeQuestions = this.getRandomQuestions(questions.quantitative, 'easy', 11, section);
+                    
+                    allQuestions.push(...verbalQuestions, ...quantitativeQuestions);
+                }
+                
+                // القسم 4 (13 سؤال لفظي)
+                const section4Verbal = this.getRandomQuestions(questions.verbal, 'easy', 13, 4);
+                allQuestions.push(...section4Verbal);
+                
+                // القسم 5 (11 سؤال كمي)
+                const section5Quantitative = this.getRandomQuestions(questions.quantitative, 'easy', 11, 5);
+                allQuestions.push(...section5Quantitative);
+                
+                // القسم 6 (13 سؤال لفظي)
+                const section6Verbal = this.getRandomQuestions(questions.verbal, 'easy', 13, 6);
+                allQuestions.push(...section6Verbal);
+                
+                // القسم 7 (11 سؤال كمي)
+                const section7Quantitative = this.getRandomQuestions(questions.quantitative, 'easy', 11, 7);
+                allQuestions.push(...section7Quantitative);
+                
+                return allQuestions;
+            },
+            
+            // الحصول على أسئلة عشوائية
+            getRandomQuestions: function(questions, difficulty, count, section) {
+                // تصفية الأسئلة حسب الصعوبة والقسم
+                const filtered = questions.filter(q => q.difficulty === difficulty && q.section === section);
+                
+                // إذا لم يكن هناك ما يكفي من الأسئلة، نعيد ما هو متاح
+                if (filtered.length <= count) {
+                    return [...filtered]; // إنشاء نسخة جديدة من المصفوفة
+                }
+                
+                // اختيار عشوائي للأسئلة
+                const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+                return shuffled.slice(0, count);
+            },
+            
+            // عرض صفحة الاختبار
+            showTestPage: function() {
+                const question = this.testQuestions[this.currentQuestionIndex];
+                const currentSection = question.section;
+                const questionsInSection = this.testQuestions.filter(q => q.section === currentSection).length;
+                
+                const testHTML = `
+                    <div class="test-container">
+                        <div class="header">
+                            <div class="user-info">
+                                <img src="https://via.placeholder.com/40" alt="صورة المستخدم">
+                                <h2>${this.currentTest === 'short' ? 'اختبار قصير' : this.currentTest === 'full' ? 'اختبار قياس كامل' : 'اختبار مخصص'}</h2>
+                            </div>
+                            <button class="btn btn-danger" id="finishTestBtn">إنهاء الاختبار</button>
+                        </div>
+                        
+                        <div class="section-info">
+                            القسم ${currentSection} - السؤال ${this.currentQuestionIndex + 1} من ${questionsInSection}
+                        </div>
+                        
+                        <div class="timer-section">
+                            <div class="progress-bar">
+                                <div class="progress" id="progressBar" style="width: 0%"></div>
+                            </div>
+                            <div class="timer" id="timer">${this.formatTime(this.sectionTimeLeft)}</div>
+                        </div>
+                        
+                        <div class="question-section">
+                            <div class="question-text" id="questionText"></div>
+                            <div class="options-container" id="optionsContainer"></div>
+                        </div>
+                        
+                        <button class="btn" id="nextQuestionBtn" style="display: none;">السؤال التالي</button>
+                    </div>
+                `;
+                document.getElementById('mainContainer').innerHTML = testHTML;
+                this.showCurrentQuestion();
+            },
+            
+            // تنسيق الوقت
+            formatTime: function(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            },
+            
+            // عرض السؤال الحالي
+            showCurrentQuestion: function() {
+                if (this.currentQuestionIndex >= this.testQuestions.length) {
+                    this.finishTest();
+                    return;
+                }
+                
+                const question = this.testQuestions[this.currentQuestionIndex];
+                const questionText = document.getElementById('questionText');
+                const optionsContainer = document.getElementById('optionsContainer');
+                
+                questionText.textContent = `${this.currentQuestionIndex + 1}. ${question.text}`;
+                optionsContainer.innerHTML = '';
+                
+                question.options.forEach((option, index) => {
+                    const optionBtn = document.createElement('button');
+                    optionBtn.className = 'option-btn';
+                    optionBtn.textContent = option;
+                    optionBtn.dataset.option = index;
+                    optionsContainer.appendChild(optionBtn);
+                });
+                
+                // تحديث شريط التقدم
+                const progress = (this.currentQuestionIndex / this.testQuestions.length) * 100;
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                
+                // التحقق إذا انتقلنا لقسم جديد
+                if (this.currentQuestionIndex > 0) {
+                    const prevQuestion = this.testQuestions[this.currentQuestionIndex - 1];
+                    if (question.section !== prevQuestion.section) {
+                        // قسم جديد، نضبط الوقت المتبقي حسب نوع الاختبار
+                        if (this.currentTest === 'short') {
+                            if (question.section <= 5) {
+                                this.sectionTimeLeft = 11 * 60; // 11 دقيقة للأقسام 1-5
+                            } else {
+                                this.sectionTimeLeft = 6 * 60; // 6 دقائق للأقسام 6-7
+                            }
+                        } else if (this.currentTest === 'full') {
+                            if (question.section <= 3) {
+                                this.sectionTimeLeft = 24 * 60; // 24 دقيقة للأقسام 1-3
+                            } else if (question.section === 4 || question.section === 6) {
+                                this.sectionTimeLeft = 13 * 60; // 13 دقيقة للأقسام اللفظية
+                            } else {
+                                this.sectionTimeLeft = 11 * 60; // 11 دقيقة للأقسام الكمية
+                            }
+                        }
+                        
+                        // إعادة تشغيل المؤقت
+                        clearInterval(this.timer);
+                        this.startTimer();
+                        
+                        // تحديث واجهة المستخدم لعرض القسم الجديد
+                        this.showTestPage();
+                        return;
+                    }
+                }
+            },
+            
+            // بدء المؤقت
+            startTimer: function() {
+                clearInterval(this.timer);
+                this.updateTimerDisplay();
+                
+                this.timer = setInterval(() => {
+                    this.sectionTimeLeft--;
+                    this.accumulatedTime++;
+                    this.updateTimerDisplay();
+                    
+                    if (this.sectionTimeLeft <= 0) {
+                        clearInterval(this.timer);
+                        this.timeUp();
+                    }
+                }, 1000);
+            },
+            
+            // تحديث عرض المؤقت
+            updateTimerDisplay: function() {
+                document.getElementById('timer').textContent = this.formatTime(this.sectionTimeLeft);
+            },
+            
+            // انتهاء الوقت
+            timeUp: function() {
+                alert('انتهى الوقت المخصص لهذا القسم');
+                this.handleAnswerSelection(null); // null يعني أنه لم يتم اختيار إجابة
+            },
+            
+            // معالجة اختيار الإجابة
+            handleAnswerSelection: function(selectedOptionBtn) {
+                clearInterval(this.timer);
+                
+                const question = this.testQuestions[this.currentQuestionIndex];
+                const options = document.querySelectorAll('.option-btn');
+                let selectedOption = null;
+                
+                if (selectedOptionBtn) {
+                    selectedOption = parseInt(selectedOptionBtn.dataset.option);
+                    selectedOptionBtn.classList.add('selected');
+                }
+                
+                // تخزين إجابة المستخدم
+                this.userAnswers[this.currentQuestionIndex] = {
+                    questionId: question.id,
+                    selectedOption,
+                    isCorrect: selectedOption === question.correctAnswer,
+                    timeSpent: this.accumulatedTime,
+                    section: question.section
+                };
+                
+                // تلوين الخيارات
+                options.forEach((option, index) => {
+                    option.disabled = true;
+                    
+                    if (index === question.correctAnswer) {
+                        option.classList.add('correct');
+                    } else if (index === selectedOption && selectedOption !== question.correctAnswer) {
+                        option.classList.add('wrong');
+                    }
+                });
+                
+                // حساب النقاط
+                if (selectedOption === question.correctAnswer) {
+                    this.score++;
+                }
+                
+                // عرض زر السؤال التالي
+                document.getElementById('nextQuestionBtn').style.display = 'block';
+            },
+            
+            // الانتقال إلى السؤال التالي
+            nextQuestion: function() {
+                this.currentQuestionIndex++;
+                this.accumulatedTime = 0;
+                
+                if (this.currentQuestionIndex < this.testQuestions.length) {
+                    const nextQuestion = this.testQuestions[this.currentQuestionIndex];
+                    
+                    // إذا انتقلنا إلى قسم جديد، نعرض الصفحة من جديد
+                    if (this.currentQuestionIndex > 0) {
+                        const prevQuestion = this.testQuestions[this.currentQuestionIndex - 1];
+                        if (nextQuestion.section !== prevQuestion.section) {
+                            this.showTestPage();
+                            return;
+                        }
+                    }
+                    
+                    this.startTimer();
+                    this.showCurrentQuestion();
+                    document.getElementById('nextQuestionBtn').style.display = 'none';
+                } else {
+                    this.finishTest();
+                }
+            },
+            
+            // إنهاء الاختبار وعرض النتائج
+            finishTest: function() {
+                clearInterval(this.timer);
+                
+                const percentage = Math.round((this.score / this.testQuestions.length) * 100);
+                const isPassed = percentage >= 90;
+                
+                const resultsHTML = `
+                    <div class="results-container">
+                        <div class="result-card ${isPassed ? 'passed' : 'failed'}">
+                            <div class="result-emoji">${isPassed ? '🎉' : '😢'}</div>
+                            <h2>${isPassed ? 'مبروك! لقد نجحت' : 'للأسف لم تنجح'}</h2>
+                            
+                            <div class="score-section">
+                                <div class="score-box">
+                                    <h3>الدرجة الكلية</h3>
+                                    <div class="score-value">${this.score}/${this.testQuestions.length}</div>
+                                </div>
+                                <div class="score-box">
+                                    <h3>النسبة المئوية</h3>
+                                    <div class="score-value">${percentage}%</div>
+                                </div>
+                            </div>
+                            
+                            ${isPassed ? 
+                                `<p class="success-message">ممتاز! يمكنك الآن الانتقال إلى الاختبار التالي</p>
+                                 <button class="btn btn-success" id="nextTestBtn">الاختبار التالي</button>` :
+                                `<p class="retry-message">يمكنك إعادة الاختبار لتحسين نتيجتك</p>
+                                 <button class="btn" id="retryTestBtn">إعادة الاختبار</button>`
+                            }
+                            
+                            <button class="details-btn" id="viewDetailsBtn">عرض التفاصيل</button>
+                            <button class="btn" id="backToDashboardBtn">العودة للشاشة الرئيسية</button>
+                        </div>
+                        <div id="detailedResults" style="display: none;"></div>
+                    </div>
+                `;
+                document.getElementById('mainContainer').innerHTML = resultsHTML;
+                
+                // إضافة تأثيرات حسب النتيجة
+                if (isPassed) {
+                    this.createConfetti();
+                } else {
+                    this.createSadEffect();
+                }
+                
+                // حفظ نتيجة الطالب
+                this.saveStudentResult(percentage, isPassed);
+            },
+            
+            // إنشاء تأثير الألعاب النارية للنجاح
+            createConfetti: function() {
+                const colors = ['#f0f', '#0ff', '#ff0', '#f00', '#0f0', '#00f'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    document.body.appendChild(confetti);
+                    
+                    // إزالة العنصر بعد انتهاء التأثير
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
+            },
+            
+            // إنشاء تأثير الحزن للرسوب
+            createSadEffect: function() {
+                const sadEffect = document.createElement('div');
+                sadEffect.className = 'sad-effect';
+                sadEffect.innerHTML = '😢';
+                document.body.appendChild(sadEffect);
+                
+                // إزالة التأثير بعد 3 ثوان
+                setTimeout(() => {
+                    sadEffect.remove();
+                }, 3000);
+            },
+            
+            // حفظ نتائج الطالب
+            saveStudentResult: function(percentage, isPassed) {
+                if (!this.currentUser || this.currentUser.isAdmin || this.currentUser.id === 0) return;
+                
+                const studentResults = JSON.parse(localStorage.getItem('qodratak_studentResults')) || {};
+                const userId = this.currentUser.id;
+                
+                if (!studentResults[userId]) {
+                    studentResults[userId] = [];
+                }
+                
+                studentResults[userId].push({
+                    date: new Date().toISOString(),
+                    testType: this.currentTest,
+                    score: this.score,
+                    totalQuestions: this.testQuestions.length,
+                    percentage,
+                    isPassed,
+                    answers: this.userAnswers
+                });
+                
+                localStorage.setItem('qodratak_studentResults', JSON.stringify(studentResults));
+            },
+            
+            // عرض النتائج التفصيلية
+            showDetailedResults: function() {
+                const detailedResults = document.getElementById('detailedResults');
+                detailedResults.style.display = 'block';
+                detailedResults.innerHTML = '<h3>تفاصيل الإجابات:</h3>';
+                
+                this.testQuestions.forEach((question, index) => {
+                    const userAnswer = this.userAnswers[index];
+                    const isCorrect = userAnswer ? userAnswer.isCorrect : false;
+                    const selectedOption = userAnswer && userAnswer.selectedOption !== null ? 
+                        question.options[userAnswer.selectedOption] : 'لم يتم الإجابة';
+                    
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-item';
+                    questionDiv.innerHTML = `
+                        <p><strong>السؤال ${index + 1} (القسم ${question.section}):</strong> ${question.text}</p>
+                        <p><strong>إجابتك:</strong> ${selectedOption}</p>
+                        <p><strong>الإجابة الصحيحة:</strong> ${question.options[question.correctAnswer]}</p>
+                        <p><strong>الحالة:</strong> 
+                            <span style="color: ${isCorrect ? '#2ecc71' : '#e74c3c'}">
+                                ${isCorrect ? 'صحيح' : 'خطأ'}
+                            </span>
+                        </p>
+                        <p><strong>الوقت المستغرق:</strong> ${userAnswer ? this.formatTime(userAnswer.timeSpent) : '--'}</p>
+                    `;
+                    detailedResults.appendChild(questionDiv);
+                });
+                
+                document.getElementById('viewDetailsBtn').style.display = 'none';
+            },
+            
+            // بدء الاختبار التالي
+            startNextTest: function() {
+                if (this.currentTest === 'short') {
+                    this.startTest('full');
+                } else if (this.currentTest === 'full') {
+                    this.startTest('custom');
+                } else {
+                    alert('لقد أكملت جميع الاختبارات المتاحة!');
+                    this.showStudentDashboard();
+                }
+            },
+            
+            // إعادة الاختبار
+            retryTest: function() {
+                this.startTest(this.currentTest);
+            },
+            
+            // تسجيل الخروج
+            handleLogout: function() {
+                this.currentUser = null;
+                localStorage.removeItem('qodratak_loggedInUser');
+                this.showLoginPage();
+            },
+            
+            // تبديل التبويبات
+            handleTabSwitch: function(tabBtn) {
+                const tabId = tabBtn.dataset.tab;
+                
+                // إزالة الفئة النشطة من جميع الأزرار والمحتويات
+                document.querySelectorAll('.tab-btn, .tab-content').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // إضافة الفئة النشطة للزر والمحتوى المحدد
+                tabBtn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+                
+                if (tabId === 'manageQuestions') {
+                    this.loadQuestionsList();
+                } else if (tabId === 'viewResults') {
+                    this.loadResultsStats();
+                }
+            },
+            
+            // إضافة حقل خيار جديد
+            addOptionField: function() {
+                const optionsContainer = document.getElementById('optionsContainer');
+                const optionCount = document.querySelectorAll('.option-group').length + 1;
+                
+                const optionGroup = document.createElement('div');
+                optionGroup.className = 'form-group option-group';
+                optionGroup.innerHTML = `
+                    <label>الخيار ${optionCount}:</label>
+                    <input type="text" class="option-input" required>
+                    <button type="button" class="remove-option-btn">حذف</button>
+                `;
+                
+                optionsContainer.appendChild(optionGroup);
+                this.updateCorrectAnswerOptions();
+            },
+            
+            // حذف حقل خيار
+            removeOptionField: function(btn) {
+                if (document.querySelectorAll('.option-group').length <= 2) {
+                    alert('يجب أن يحتوي السؤال على خيارين على الأقل');
+                    return;
+                }
+                
+                btn.parentElement.remove();
+                this.updateCorrectAnswerOptions();
+            },
+            
+            // تحديث خيارات الإجابة الصحيحة
+            updateCorrectAnswerOptions: function() {
+                const correctAnswerSelect = document.getElementById('correctAnswer');
+                const optionCount = document.querySelectorAll('.option-group').length;
+                
+                correctAnswerSelect.innerHTML = '';
+                
+                for (let i = 0; i < optionCount; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i + 1;
+                    correctAnswerSelect.appendChild(option);
+                }
+            },
+            
+            // حفظ السؤال الجديد
+            submitQuestion: function() {
+                const type = document.getElementById('questionType').value;
+                const difficulty = document.getElementById('questionDifficulty').value;
+                const section = parseInt(document.getElementById('questionSection').value);
+                const text = document.getElementById('questionText').value;
+                const correctAnswer = parseInt(document.getElementById('correctAnswer').value);
+                
+                const options = Array.from(document.querySelectorAll('.option-input')).map(input => input.value);
+                
+                if (options.length < 2) {
+                    alert('يجب إضافة خيارين على الأقل');
+                    return;
+                }
+                
+                if (options.some(opt => !opt.trim())) {
+                    alert('جميع الخيارات يجب أن تحتوي على نص');
+                    return;
+                }
+                
+                const questions = JSON.parse(localStorage.getItem('qodratak_questions'));
+                const questionType = type === 'quantitative' ? 'quantitative' : 'verbal';
+                
+                // إنشاء معرف فريد للسؤال
+                const newId = questions[questionType].length > 0 ? 
+                    Math.max(...questions[questionType].map(q => q.id)) + 1 : 1;
+                
+                const newQuestion = {
+                    id: newId,
+                    text,
+                    options,
+                    correctAnswer,
+                    difficulty,
+                    section
+                };
+                
+                questions[questionType].push(newQuestion);
+                localStorage.setItem('qodratak_questions', JSON.stringify(questions));
+                
+                alert('تم حفظ السؤال بنجاح');
+                document.getElementById('questionForm').reset();
+                this.resetOptionFields();
+                this.loadQuestionsList();
+            },
+            
+            // إعادة تعيين حقول الخيارات
+            resetOptionFields: function() {
+                const optionsContainer = document.getElementById('optionsContainer');
+                optionsContainer.innerHTML = '';
+                
+                for (let i = 1; i <= 2; i++) {
+                    const optionGroup = document.createElement('div');
+                    optionGroup.className = 'form-group option-group';
+                    optionGroup.innerHTML = `
+                        <label>الخيار ${i}:</label>
+                        <input type="text" class="option-input" required>
+                        <button type="button" class="remove-option-btn">حذف</button>
+                    `;
+                    optionsContainer.appendChild(optionGroup);
+                }
+                
+                this.updateCorrectAnswerOptions();
+            },
+            
+            // تحميل قائمة الأسئلة
+            loadQuestionsList: function() {
+                const questionsList = document.getElementById('questionsList');
+                if (!questionsList) return;
+                
+                const questions = JSON.parse(localStorage.getItem('qodratak_questions'));
+                questionsList.innerHTML = '';
+                
+                // دمج الأسئلة الكمية واللفظية
+                const allQuestions = [
+                    ...questions.quantitative.map(q => ({ ...q, type: 'كمي', typeKey: 'quantitative' })),
+                    ...questions.verbal.map(q => ({ ...q, type: 'لفظي', typeKey: 'verbal' }))
+                ];
+                
+                if (allQuestions.length === 0) {
+                    questionsList.innerHTML = '<p>لا توجد أسئلة متاحة</p>';
+                    return;
+                }
+                
+                // تصنيف الأسئلة حسب القسم
+                const sections = {};
+                allQuestions.forEach(question => {
+                    if (!sections[`قسم ${question.section}`]) {
+                        sections[`قسم ${question.section}`] = [];
+                    }
+                    sections[`قسم ${question.section}`].push(question);
+                });
+                
+                // عرض الأسئلة مصنفة حسب الأقسام
+                for (const section in sections) {
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.className = 'section-group';
+                    sectionDiv.innerHTML = `<h4>${section}</h4>`;
+                    
+                    sections[section].forEach(question => {
+                        const questionItem = document.createElement('div');
+                        questionItem.className = 'question-item';
+                        questionItem.innerHTML = `
+                            <h4>${question.type} - ${section} - ${this.getDifficultyText(question.difficulty)}</h4>
+                            <p>${question.text}</p>
+                            <div class="question-actions">
+                                <button class="btn btn-danger delete-question-btn" 
+                                        data-id="${question.id}" 
+                                        data-type="${question.typeKey}">حذف</button>
+                            </div>
+                        `;
+                        sectionDiv.appendChild(questionItem);
+                    });
+                    
+                    questionsList.appendChild(sectionDiv);
+                }
+            },
+            
+            // تحميل إحصائيات النتائج
+            loadResultsStats: function() {
+                const resultsStats = document.getElementById('resultsStats');
+                if (!resultsStats) return;
+                
+                const studentResults = JSON.parse(localStorage.getItem('qodratak_studentResults')) || {};
+                resultsStats.innerHTML = '';
+                
+                if (Object.keys(studentResults).length === 0) {
+                    resultsStats.innerHTML = '<p>لا توجد نتائج مسجلة بعد</p>';
+                    return;
+                }
+                
+                // حساب الإحصائيات العامة
+                let totalTests = 0;
+                let passedTests = 0;
+                let totalShortTests = 0;
+                let passedShortTests = 0;
+                let totalFullTests = 0;
+                let passedFullTests = 0;
+                let totalCustomTests = 0;
+                let passedCustomTests = 0;
+                
+                for (const userId in studentResults) {
+                    studentResults[userId].forEach(result => {
+                        totalTests++;
+                        if (result.isPassed) passedTests++;
+                        
+                        if (result.testType === 'short') {
+                            totalShortTests++;
+                            if (result.isPassed) passedShortTests++;
+                        } else if (result.testType === 'full') {
+                            totalFullTests++;
+                            if (result.isPassed) passedFullTests++;
+                        } else {
+                            totalCustomTests++;
+                            if (result.isPassed) passedCustomTests++;
+                        }
+                    });
+                }
+                
+                const overallPassRate = totalTests > 0 ? Math.round((passedTests / totalTests) * 100) : 0;
+                const shortPassRate = totalShortTests > 0 ? Math.round((passedShortTests / totalShortTests) * 100) : 0;
+                const fullPassRate = totalFullTests > 0 ? Math.round((passedFullTests / totalFullTests) * 100) : 0;
+                const customPassRate = totalCustomTests > 0 ? Math.round((passedCustomTests / totalCustomTests) * 100) : 0;
+                
+                resultsStats.innerHTML = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>إجمالي الاختبارات</h4>
+                            <div class="stat-value">${totalTests}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>نسبة النجاح العامة</h4>
+                            <div class="stat-value">${overallPassRate}%</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>اختبارات قصيرة ناجحة</h4>
+                            <div class="stat-value">${passedShortTests}/${totalShortTests}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>نسبة نجاح الاختبار القصير</h4>
+                            <div class="stat-value">${shortPassRate}%</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>اختبارات كاملة ناجحة</h4>
+                            <div class="stat-value">${passedFullTests}/${totalFullTests}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>نسبة نجاح الاختبار الكامل</h4>
+                            <div class="stat-value">${fullPassRate}%</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>اختبارات مخصصة ناجحة</h4>
+                            <div class="stat-value">${passedCustomTests}/${totalCustomTests}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>نسبة نجاح الاختبار المخصص</h4>
+                            <div class="stat-value">${customPassRate}%</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin-top: 30px;">نتائج الطلاب التفصيلية:</h4>
+                    <div class="student-results-list"></div>
+                `;
+                
+                // عرض نتائج الطلاب التفصيلية
+                const studentResultsList = resultsStats.querySelector('.student-results-list');
+                const users = JSON.parse(localStorage.getItem('qodratak_users'));
+                
+                for (const userId in studentResults) {
+                    const user = users.find(u => u.id == userId);
+                    if (!user) continue;
+                    
+                    const userResults = studentResults[userId];
+                    const userDiv = document.createElement('div');
+                    userDiv.className = 'user-results';
+                    userDiv.innerHTML = `
+                        <h5>${user.name} (${user.phone})</h5>
+                        <div class="user-tests">
+                            ${userResults.map((test, index) => `
+                                <div class="test-result ${test.isPassed ? 'passed' : 'failed'}">
+                                    <span>اختبار ${test.testType === 'short' ? 'قصير' : test.testType === 'full' ? 'كامل' : 'مخصص'} - ${new Date(test.date).toLocaleDateString()}</span>
+                                    <span>${test.score}/${test.totalQuestions} (${test.percentage}%)</span>
+                                    <span>${test.isPassed ? 'ناجح' : 'راسب'}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    studentResultsList.appendChild(userDiv);
+                }
+            },
+            
+            // الحصول على نص وصف مستوى الصعوبة
+            getDifficultyText: function(difficulty) {
+                switch (difficulty) {
+                    case 'easy': return 'سهل';
+                    case 'medium': return 'متوسط';
+                    case 'hard': return 'صعب';
+                    default: return difficulty;
+                }
+            },
+            
+            // حذف سؤال
+            deleteQuestion: function(btn) {
+                if (!confirm('هل أنت متأكد من حذف هذا السؤال؟')) return;
+                
+                const questionId = parseInt(btn.dataset.id);
+                const questionType = btn.dataset.type;
+                
+                const questions = JSON.parse(localStorage.getItem('qodratak_questions'));
+                questions[questionType] = questions[questionType].filter(q => q.id !== questionId);
+                
+                localStorage.setItem('qodratak_questions', JSON.stringify(questions));
+                this.loadQuestionsList();
+            }
+        };
+
+        // تهيئة التطبيق عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => App.init());
+    </script>
