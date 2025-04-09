@@ -1,17 +1,30 @@
 import { useState } from 'react';
 
 interface LoginFormProps {
-  onSubmit: (username: string, password: string) => void;
+  onSubmit: (username: string, password: string, isRegistration?: boolean, name?: string) => void;
   error: string | null;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, error }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(username, password);
+    if (isRegistering && !name) {
+      alert('الرجاء إدخال الاسم');
+      return;
+    }
+    onSubmit(username, password, isRegistering, name);
+  };
+
+  const toggleForm = () => {
+    setIsRegistering(!isRegistering);
+    setUsername('');
+    setPassword('');
+    setName('');
   };
 
   return (
@@ -28,6 +41,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, error }) => {
       )}
       
       <form onSubmit={handleSubmit} className="space-y-4">
+        {isRegistering && (
+          <div className="text-right">
+            <label htmlFor="name" className="block font-medium mb-1">الاسم</label>
+            <input 
+              type="text" 
+              id="name" 
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition" 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required 
+            />
+          </div>
+        )}
+        
         <div className="text-right">
           <label htmlFor="username" className="block font-medium mb-1">اسم المستخدم</label>
           <input 
@@ -57,19 +84,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, error }) => {
             type="submit" 
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium p-3 rounded-md transition"
           >
-            تسجيل الدخول
+            {isRegistering ? 'إنشاء حساب' : 'تسجيل الدخول'}
           </button>
         </div>
       </form>
       
       <div className="mt-6 text-center text-gray-700">
-        ليس لديك حساب؟ <a href="#" className="text-blue-500 hover:underline">إنشاء حساب جديد</a>
-      </div>
-      
-      <div className="mt-8 text-center text-sm text-gray-500">
-        <p>للتجربة، استخدم:</p>
-        <p>اسم المستخدم: admin أو student</p>
-        <p>كلمة المرور: password</p>
+        {isRegistering ? 'لديك حساب بالفعل؟' : 'ليس لديك حساب؟'} 
+        <button 
+          onClick={toggleForm}
+          className="text-blue-500 hover:underline pr-1"
+        >
+          {isRegistering ? 'تسجيل الدخول' : 'إنشاء حساب جديد'}
+        </button>
       </div>
     </div>
   );

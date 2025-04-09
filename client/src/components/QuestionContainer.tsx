@@ -17,8 +17,6 @@ interface QuestionContainerProps {
 const QuestionContainer: React.FC<QuestionContainerProps> = ({
   question,
   selectedAnswer,
-  showDebug,
-  debugInfo,
   onSelectAnswer
 }) => {
   return (
@@ -27,18 +25,6 @@ const QuestionContainer: React.FC<QuestionContainerProps> = ({
         <div>
           {question.text}
         </div>
-        
-        {showDebug && (
-          <div className="mt-4 p-2 bg-gray-200 rounded-md text-sm text-gray-700">
-            <div className="font-bold mb-1">معلومات التصحيح:</div>
-            <div>معرف السؤال: <span>{debugInfo.questionId}</span></div>
-            <div>مصدر البيانات: <span>{debugInfo.source}</span></div>
-            <div>عدد الأسئلة المحملة: <span>{debugInfo.questionsLoaded}</span></div>
-            <div>الوقت المتبقي: <span>{debugInfo.timeRemaining}</span></div>
-            <div>مؤشر السؤال الحالي: <span>{debugInfo.currentIndex}</span></div>
-            <div>الإجابة الصحيحة: <span>{question.correctOptionIndex}</span></div>
-          </div>
-        )}
       </div>
       
       <div className="grid grid-cols-1 gap-3">

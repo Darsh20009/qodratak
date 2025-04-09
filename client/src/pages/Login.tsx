@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { User } from '../lib/types';
 import LoginForm from '../components/LoginForm';
 
@@ -8,30 +8,78 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [error, setError] = useState<string | null>(null);
+  const [users, setUsers] = useState<User[]>([
+    { id: 1, username: 'admin', name: 'المدير', isAdmin: true },
+    { id: 2, username: 'student', name: 'محمد', isAdmin: false }
+  ]);
 
-  const handleLogin = (username: string, password: string) => {
+  // Load saved users from localStorage
+  useEffect(() => {
+    const savedUsers = localStorage.getItem('qudratak_users');
+    if (savedUsers) {
+      try {
+        const parsedUsers = JSON.parse(savedUsers) as User[];
+        // Ensure the default admin and student are always available
+        const defaultUsers = [
+          { id: 1, username: 'admin', name: 'المدير', isAdmin: true },
+          { id: 2, username: 'student', name: 'محمد', isAdmin: false }
+        ];
+        
+        // Merge existing users with default users, prioritizing the existing ones
+        const existingUsernames = parsedUsers.map(u => u.username);
+        const usersToAdd = defaultUsers.filter(u => !existingUsernames.includes(u.username));
+        
+        setUsers([...parsedUsers, ...usersToAdd]);
+      } catch (error) {
+        console.error('Error parsing users from localStorage:', error);
+      }
+    } else {
+      // Initialize localStorage with default users
+      localStorage.setItem('qudratak_users', JSON.stringify(users));
+    }
+  }, []);
+
+  const handleAuthAction = (username: string, password: string, isRegistration = false, name = '') => {
     // Clear any previous errors
     setError(null);
     
-    // Simulate authentication with mock data for demo purposes
-    // In a real application, this would be an API call
-    const mockUsers: User[] = [
-      { id: 1, username: 'admin', name: 'المدير', isAdmin: true },
-      { id: 2, username: 'student', name: 'محمد', isAdmin: false }
-    ];
-    
-    const user = mockUsers.find(u => u.username === username);
-    
-    if (user && password === 'password') {
-      onLogin(user);
+    if (isRegistration) {
+      // Registration logic
+      const existingUser = users.find(u => u.username === username);
+      
+      if (existingUser) {
+        setError('اسم المستخدم موجود بالفعل، الرجاء اختيار اسم آخر');
+        return;
+      }
+      
+      const newUser: User = {
+        id: users.length + 1,
+        username,
+        name: name || username, // Use the provided name or username as fallback
+        isAdmin: false  // New users are never admin by default
+      };
+      
+      const updatedUsers = [...users, newUser];
+      setUsers(updatedUsers);
+      localStorage.setItem('qudratak_users', JSON.stringify(updatedUsers));
+      
+      // Auto-login after registration
+      onLogin(newUser);
     } else {
-      setError('اسم المستخدم أو كلمة المرور غير صحيحة');
+      // Login logic
+      const user = users.find(u => u.username === username);
+      
+      if (user) {
+        onLogin(user);
+      } else {
+        setError('اسم المستخدم أو كلمة المرور غير صحيحة');
+      }
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-200">
-      <LoginForm onSubmit={handleLogin} error={error} />
+      <LoginForm onSubmit={handleAuthAction} error={error} />
     </div>
   );
 };

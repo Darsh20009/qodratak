@@ -12,7 +12,6 @@ const TestPage: React.FC<TestPageProps> = ({ user, onFinish }) => {
   const [testSession, setTestSession] = useState<TestSession | null>(null);
   const [config, setConfig] = useState<TestConfig | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showDebug, setShowDebug] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [testComplete, setTestComplete] = useState(false);
 
@@ -161,12 +160,15 @@ const TestPage: React.FC<TestPageProps> = ({ user, onFinish }) => {
     // Calculate test results
     const totalQuestions = testSession.questions.length;
     const answeredQuestions = testSession.userAnswers.filter(a => a !== null).length;
-    const correctAnswers = testSession.userAnswers.reduce((count, answer, index) => {
-      if (answer === testSession.questions[index].correctOptionIndex) {
-        return count + 1;
+    let correctAnswers = 0;
+    
+    // Count correct answers
+    for (let i = 0; i < testSession.userAnswers.length; i++) {
+      const answer = testSession.userAnswers[i];
+      if (answer !== null && answer === testSession.questions[i].correctOptionIndex) {
+        correctAnswers++;
       }
-      return count;
-    }, 0);
+    }
     
     const scorePercent = Math.round((correctAnswers / totalQuestions) * 100);
     const passed = scorePercent >= 60; // Pass threshold 60%
@@ -236,12 +238,11 @@ const TestPage: React.FC<TestPageProps> = ({ user, onFinish }) => {
         section={`القسم ${currentQuestion.type === 'verbal' ? 'اللفظي' : 'الكمي'}`}
         question={currentQuestion}
         selectedAnswer={currentAnswer}
-        showDebug={showDebug}
+        showDebug={false}
         debugInfo={debugInfo}
         onNext={handleNextQuestion}
         onPrev={handlePrevQuestion}
         onSelectAnswer={handleAnswerSelect}
-        onToggleDebug={() => setShowDebug(!showDebug)}
       />
     </div>
   );

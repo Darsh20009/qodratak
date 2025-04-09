@@ -24,7 +24,6 @@ interface TestContainerProps {
   onNext: () => void;
   onPrev: () => void;
   onSelectAnswer: (index: number) => void;
-  onToggleDebug: () => void;
 }
 
 const TestContainer: React.FC<TestContainerProps> = ({
@@ -39,8 +38,7 @@ const TestContainer: React.FC<TestContainerProps> = ({
   debugInfo,
   onNext,
   onPrev,
-  onSelectAnswer,
-  onToggleDebug
+  onSelectAnswer
 }) => {
   return (
     <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
@@ -83,13 +81,6 @@ const TestContainer: React.FC<TestContainerProps> = ({
           disabled={progress.current === 1}
         >
           <i className="fas fa-arrow-right ml-1"></i> السابق
-        </button>
-        
-        <button 
-          onClick={onToggleDebug}
-          className="bg-gray-400 hover:bg-gray-500 text-white font-medium py-2 px-4 rounded-md transition text-sm"
-        >
-          <i className="fas fa-bug ml-1"></i> {showDebug ? 'إخفاء' : 'إظهار'} معلومات التصحيح
         </button>
         
         <button 
