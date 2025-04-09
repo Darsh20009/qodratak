@@ -24,6 +24,7 @@ interface TestContainerProps {
   onNext: () => void;
   onPrev: () => void;
   onSelectAnswer: (index: number) => void;
+  onFinish?: () => void; // زر إنهاء الاختبار اختياري
 }
 
 const TestContainer: React.FC<TestContainerProps> = ({
@@ -38,7 +39,8 @@ const TestContainer: React.FC<TestContainerProps> = ({
   debugInfo,
   onNext,
   onPrev,
-  onSelectAnswer
+  onSelectAnswer,
+  onFinish
 }) => {
   return (
     <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
@@ -75,17 +77,28 @@ const TestContainer: React.FC<TestContainerProps> = ({
       />
       
       <div className="flex justify-between mt-6">
-        <button 
-          onClick={onPrev}
-          className="bg-gray-700 hover:bg-gray-800 text-white font-medium py-2 px-6 rounded-md transition"
-          disabled={progress.current === 1}
-        >
-          <i className="fas fa-arrow-right ml-1"></i> السابق
-        </button>
+        <div className="flex gap-2">
+          <button 
+            onClick={onPrev}
+            className="bg-gray-700 hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-md transition"
+            disabled={progress.current === 1}
+          >
+            <i className="fas fa-arrow-right ml-1"></i> السابق
+          </button>
+          
+          {onFinish && (
+            <button 
+              onClick={onFinish}
+              className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-md transition"
+            >
+              إنهاء الاختبار
+            </button>
+          )}
+        </div>
         
         <button 
           onClick={onNext}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-md transition"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition"
         >
           {progress.current === progress.total ? 'إنهاء الاختبار' : 'التالي'} <i className="fas fa-arrow-left mr-1"></i>
         </button>

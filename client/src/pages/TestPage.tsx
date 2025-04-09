@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { User, Question, TestConfig, TestSession } from '../lib/types';
 import { QuestionStore } from '../lib/questionStore';
 import TestContainer from '../components/TestContainer';
+import TestResults from '../components/TestResults';
 
 interface TestPageProps {
   user: User;
@@ -199,51 +200,15 @@ const TestPage: React.FC<TestPageProps> = ({ user, onFinish }) => {
     
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-200">
-        <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
-          <div className={`p-6 rounded-lg ${passed ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'}`}>
-            <h2 className="text-2xl font-bold text-center mb-4">نتائج الاختبار</h2>
-            
-            <div className="text-center text-6xl my-5">
-              {passed ? '🎉' : '😕'}
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
-              <div className="bg-white p-4 rounded-lg shadow text-center">
-                <h3 className="text-gray-700 mb-2">الأسئلة الكلية</h3>
-                <div className="text-2xl font-bold">{totalQuestions}</div>
-              </div>
-              
-              <div className="bg-white p-4 rounded-lg shadow text-center">
-                <h3 className="text-gray-700 mb-2">الإجابات الصحيحة</h3>
-                <div className="text-2xl font-bold">{correctAnswers}</div>
-              </div>
-              
-              <div className="bg-white p-4 rounded-lg shadow text-center">
-                <h3 className="text-gray-700 mb-2">النسبة المئوية</h3>
-                <div className="text-2xl font-bold">{scorePercent}%</div>
-              </div>
-            </div>
-            
-            {passed ? (
-              <div className="text-center text-green-600 text-xl font-bold my-4">
-                مبروك! لقد اجتزت الاختبار بنجاح
-              </div>
-            ) : (
-              <div className="text-center text-red-600 text-xl font-bold my-4">
-                للأسف، لم تتمكن من اجتياز الاختبار. يمكنك المحاولة مرة أخرى.
-              </div>
-            )}
-            
-            <div className="mt-8 text-center">
-              <button 
-                onClick={onFinish}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md transition font-medium"
-              >
-                العودة إلى الرئيسية
-              </button>
-            </div>
-          </div>
-        </div>
+        <TestResults
+          questions={testSession.questions}
+          userAnswers={testSession.userAnswers}
+          correctCount={correctAnswers}
+          totalCount={totalQuestions}
+          scorePercent={scorePercent}
+          passed={passed}
+          onFinish={onFinish}
+        />
       </div>
     );
   }
@@ -288,6 +253,7 @@ const TestPage: React.FC<TestPageProps> = ({ user, onFinish }) => {
         onNext={handleNextQuestion}
         onPrev={handlePrevQuestion}
         onSelectAnswer={handleAnswerSelect}
+        onFinish={() => setTestComplete(true)} // إضافة زر لإنهاء الاختبار فوراً
       />
     </div>
   );
