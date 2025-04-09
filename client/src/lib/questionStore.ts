@@ -10,13 +10,10 @@ interface QuestionStoreData {
   lastId: number;
 }
 
-// تحميل الأسئلة من ملف JSON الخارجي
-const allQuestionsFromFile = formatQuestionsForStorage();
-
-// Initial store data with preloaded questions from file
+// Initial store data
 const initialStoreData: QuestionStoreData = {
-  questions: allQuestionsFromFile,
-  lastId: allQuestionsFromFile.length > 0 ? Math.max(...allQuestionsFromFile.map(q => q.id)) : 0
+  questions: [],
+  lastId: 0
 };
 
 // Function to get the store data
@@ -40,6 +37,24 @@ const saveStoreData = (data: QuestionStoreData): void => {
   localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(data));
 };
 
+// التحقق من وجود أسئلة عند بدء التطبيق وتحميلها إذا لم تكن موجودة
+function autoLoadQuestions() {
+  const storeData = getStoreData();
+  if (storeData.questions.length === 0) {
+    console.log('تحميل الأسئلة تلقائياً من ملف JSON...');
+    const freshQuestions = formatQuestionsForStorage();
+    storeData.questions = freshQuestions;
+    storeData.lastId = freshQuestions.length > 0 ? Math.max(...freshQuestions.map(q => q.id)) : 0;
+    saveStoreData(storeData);
+    console.log(`تم تحميل ${freshQuestions.length} سؤال بنجاح.`);
+  } else {
+    console.log(`استخدام ${storeData.questions.length} سؤال من التخزين المحلي.`);
+  }
+}
+
+// تنفيذ التحميل التلقائي عند بدء التطبيق
+autoLoadQuestions();
+
 // Question Store API
 export const QuestionStore = {
   // Get questions directly from JSON file without localStorage
@@ -58,8 +73,29 @@ export const QuestionStore = {
   },
   // Get all questions
   getAll: (): Question[] => {
-    const { questions } = getStoreData();
-    return questions;
+    const storeData = getStoreData();
+    
+    // إذا لم تكن هناك أسئلة، قم بتحميلها من الملف أولاً
+    if (storeData.questions.length === 0) {
+      console.log('تحميل الأسئلة تلقائياً في getAll()...');
+      const freshQuestions = formatQuestionsForStorage();
+      storeData.questions = freshQuestions;
+      storeData.lastId = freshQuestions.length > 0 ? Math.max(...freshQuestions.map(q => q.id)) : 0;
+      saveStoreData(storeData);
+    }
+    
+    return storeData.questions;
+  },
+  
+  // تحميل الأسئلة من الملف وحفظها في التخزين المحلي
+  refreshQuestionsFromFile: (): Question[] => {
+    const freshQuestions = formatQuestionsForStorage();
+    const storeData = getStoreData();
+    storeData.questions = freshQuestions;
+    storeData.lastId = freshQuestions.length > 0 ? Math.max(...freshQuestions.map(q => q.id)) : 0;
+    saveStoreData(storeData);
+    console.log(`تم تحديث ${freshQuestions.length} سؤال من الملف في التخزين المحلي`);
+    return freshQuestions;
   },
   
   // Get questions by type
@@ -77,6 +113,15 @@ export const QuestionStore = {
   // Add a new question
   add: (question: Omit<Question, 'id' | 'createdAt' | 'updatedAt'>): Question => {
     const storeData = getStoreData();
+    
+    // تحقق من وجود أسئلة - إذا لم توجد، فقم بتحميلها من الملف أولاً
+    if (storeData.questions.length === 0) {
+      console.log('تحميل الأسئلة من الملف قبل الإضافة...');
+      const freshQuestions = formatQuestionsForStorage();
+      storeData.questions = freshQuestions;
+      storeData.lastId = freshQuestions.length > 0 ? Math.max(...freshQuestions.map(q => q.id)) : 0;
+    }
+    
     const newId = storeData.lastId + 1;
     
     const now = new Date().toISOString();
@@ -91,6 +136,7 @@ export const QuestionStore = {
     storeData.lastId = newId;
     
     saveStoreData(storeData);
+    console.log(`تم إضافة سؤال جديد (ID: ${newId}) وحفظه في التخزين المحلي`);
     return newQuestion;
   },
   

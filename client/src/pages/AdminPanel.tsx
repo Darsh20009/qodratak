@@ -17,7 +17,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ user, onLogout }) => {
   const [showQuestionForm, setShowQuestionForm] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
 
-  // Load questions
+  // تحميل الأسئلة من ملف JSON عند بدء التطبيق
+  useEffect(() => {
+    // تحميل الأسئلة من ملف JSON مباشرة عند تحميل المكون للمرة الأولى
+    QuestionStore.refreshQuestionsFromFile();
+    loadQuestions();
+  }, []);
+  
+  // تحميل الأسئلة عند تغيير عامل التصفية
   useEffect(() => {
     loadQuestions();
   }, [filter]);

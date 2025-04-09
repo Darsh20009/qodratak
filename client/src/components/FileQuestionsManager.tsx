@@ -58,11 +58,23 @@ const FileQuestionsManager: React.FC<FileQuestionsManagerProps> = ({ onImport })
   
   const handleLoadFromFile = () => {
     // تحميل الأسئلة من ملف الجيسون مباشرة
-    QuestionStore.injectSampleQuestions();
+    // أولاً: قم بإعادة تعيين التخزين المحلي لإزالة أي قيم قديمة
+    QuestionStore.reset();
+    
+    // الآن قم بتحميل الأسئلة من الملف مباشرة
+    const freshQuestions = QuestionStore.getQuestionsFromFile();
+    
+    // أضف كل سؤال واحدًا تلو الآخر
+    freshQuestions.forEach(q => {
+      const { id, createdAt, updatedAt, ...questionData } = q;
+      QuestionStore.add(questionData);
+    });
+    
+    // أبلغ عن الاستيراد الناجح
     onImport();
     
     // إظهار إحصائيات عن الأسئلة المستوردة
-    const questions = QuestionStore.getQuestionsFromFile();
+    const questions = QuestionStore.getAll();
     const verbalQuestions = questions.filter(q => q.type === 'verbal');
     const quantitativeQuestions = questions.filter(q => q.type === 'quantitative');
     
@@ -72,7 +84,7 @@ const FileQuestionsManager: React.FC<FileQuestionsManagerProps> = ({ onImport })
       quantitative: quantitativeQuestions.length
     });
     
-    alert(`تم تحميل ${questions.length} سؤال من ملف questions_all.json`);
+    alert(`تم تحميل ${questions.length} سؤال من ملف questions_all.json بنجاح!`);
   };
   
   return (
