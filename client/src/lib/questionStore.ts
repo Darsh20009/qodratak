@@ -1,4 +1,5 @@
 import { Question } from './types';
+import { formatQuestionsForStorage } from './questionsLoader';
 
 // Storage key for the local storage
 const QUESTIONS_STORAGE_KEY = 'qudratak_questions';
@@ -9,10 +10,13 @@ interface QuestionStoreData {
   lastId: number;
 }
 
-// Initial store data
+// تحميل الأسئلة من ملف JSON الخارجي
+const allQuestionsFromFile = formatQuestionsForStorage();
+
+// Initial store data with preloaded questions from file
 const initialStoreData: QuestionStoreData = {
-  questions: [],
-  lastId: 0
+  questions: allQuestionsFromFile,
+  lastId: allQuestionsFromFile.length > 0 ? Math.max(...allQuestionsFromFile.map(q => q.id)) : 0
 };
 
 // Function to get the store data
@@ -38,6 +42,20 @@ const saveStoreData = (data: QuestionStoreData): void => {
 
 // Question Store API
 export const QuestionStore = {
+  // Get questions directly from JSON file without localStorage
+  getQuestionsFromFile: (): Question[] => {
+    return formatQuestionsForStorage();
+  },
+  
+  // Get verbal questions directly from JSON file
+  getVerbalQuestionsFromFile: (): Question[] => {
+    return formatQuestionsForStorage().filter(q => q.type === 'verbal');
+  },
+  
+  // Get quantitative questions directly from JSON file
+  getQuantitativeQuestionsFromFile: (): Question[] => {
+    return formatQuestionsForStorage().filter(q => q.type === 'quantitative');
+  },
   // Get all questions
   getAll: (): Question[] => {
     const { questions } = getStoreData();
@@ -152,6 +170,26 @@ export const QuestionStore = {
     saveStoreData(initialStoreData);
   },
   
+  // Export questions to JSON string for backup
+  exportQuestionsToJSON: (): string => {
+    const { questions } = getStoreData();
+    
+    // تقسيم الأسئلة حسب النوع
+    const verbalQuestions = questions.filter(q => q.type === 'verbal')
+      .map(({ id, text, options, correctOptionIndex }) => ({ id, text, options, correctOptionIndex }));
+      
+    const quantitativeQuestions = questions.filter(q => q.type === 'quantitative')
+      .map(({ id, text, options, correctOptionIndex }) => ({ id, text, options, correctOptionIndex }));
+      
+    // إنشاء كائن التصدير
+    const exportObject = {
+      verbal: verbalQuestions,
+      quantitative: quantitativeQuestions
+    };
+    
+    return JSON.stringify(exportObject, null, 2);
+  },
+  
   // For debugging: Inject test questions
   injectSampleQuestions: (): void => {
     const storeData = getStoreData();
@@ -161,35 +199,12 @@ export const QuestionStore = {
       return;
     }
     
-    const sampleQuestions: Omit<Question, 'id' | 'createdAt' | 'updatedAt'>[] = [
-      {
-        type: 'verbal',
-        text: 'ما هو مرادف كلمة "نضب" في اللغة العربية؟',
-        options: ['فاض', 'نفد', 'استمر', 'تراكم'],
-        correctOptionIndex: 1
-      },
-      {
-        type: 'quantitative',
-        text: 'إذا كان س + ص = 15 و س - ص = 3، فما قيمة س؟',
-        options: ['6', '9', '12', '15'],
-        correctOptionIndex: 1
-      }
-    ];
+    // تحميل الأسئلة من ملف JSON مباشرة
+    const freshQuestions = formatQuestionsForStorage();
     
-    let lastId = storeData.lastId;
-    const now = new Date().toISOString();
+    storeData.questions = freshQuestions;
+    storeData.lastId = freshQuestions.length > 0 ? Math.max(...freshQuestions.map(q => q.id)) : 0;
     
-    for (const q of sampleQuestions) {
-      lastId++;
-      storeData.questions.push({
-        ...q,
-        id: lastId,
-        createdAt: now,
-        updatedAt: now
-      });
-    }
-    
-    storeData.lastId = lastId;
     saveStoreData(storeData);
   }
 };

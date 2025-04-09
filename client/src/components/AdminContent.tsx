@@ -5,6 +5,7 @@ import DatabaseDiagnostics from './DatabaseDiagnostics';
 import UserManagement from './UserManagement';
 import ImportQuestions from './ImportQuestions';
 import SystemSettings from './SystemSettings';
+import FileQuestionsManager from './FileQuestionsManager';
 
 interface AdminContentProps {
   activeTab: string;
@@ -113,6 +114,16 @@ const AdminContent: React.FC<AdminContentProps> = ({
             onEdit={onEditQuestion}
             onDelete={onDeleteQuestion}
           />
+          
+          {/* File Questions Manager */}
+          <div className="mt-8 mb-8">
+            <FileQuestionsManager 
+              onImport={() => {
+                alert('تم تحميل الأسئلة من الملف بنجاح!');
+                onDatabaseAction('validate');
+              }}
+            />
+          </div>
           
           {/* Database Diagnostics */}
           <DatabaseDiagnostics 
