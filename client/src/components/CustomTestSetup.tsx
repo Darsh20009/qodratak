@@ -20,6 +20,7 @@ const CustomTestSetup: React.FC<CustomTestSetupProps> = ({ onStart, onCancel }) 
     }
     
     onStart({
+      type: 'custom',
       verbalQuestions,
       quantitativeQuestions,
       duration

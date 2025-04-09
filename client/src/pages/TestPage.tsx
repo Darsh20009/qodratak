@@ -29,16 +29,40 @@ const TestPage: React.FC<TestPageProps> = ({ user, onFinish }) => {
       setConfig(parsedConfig);
       
       // Load questions based on config
-      const verbalQuestions = parsedConfig.verbalQuestions > 0 
-        ? QuestionStore.getByType('verbal').slice(0, parsedConfig.verbalQuestions)
-        : [];
+      let allQuestions: Question[] = [];
+      
+      if (parsedConfig.type === 'qiyas' && parsedConfig.sections) {
+        // لاختبار القياس، نعد الأسئلة حسب الأقسام
+        let verbalQuestionPosition = 0;
+        let quantitativeQuestionPosition = 0;
         
-      const quantitativeQuestions = parsedConfig.quantitativeQuestions > 0
-        ? QuestionStore.getByType('quantitative').slice(0, parsedConfig.quantitativeQuestions)
-        : [];
+        // نجمع الأسئلة من كل قسم بالترتيب
+        for (const section of parsedConfig.sections) {
+          if (section.type === 'verbal') {
+            const questions = QuestionStore.getByType('verbal')
+              .slice(verbalQuestionPosition, verbalQuestionPosition + section.questionsCount);
+            allQuestions = [...allQuestions, ...questions];
+            verbalQuestionPosition += section.questionsCount;
+          } else {
+            const questions = QuestionStore.getByType('quantitative')
+              .slice(quantitativeQuestionPosition, quantitativeQuestionPosition + section.questionsCount);
+            allQuestions = [...allQuestions, ...questions];
+            quantitativeQuestionPosition += section.questionsCount;
+          }
+        }
+      } else {
+        // للاختبارات العادية
+        const verbalQuestions = parsedConfig.verbalQuestions > 0 
+          ? QuestionStore.getByType('verbal').slice(0, parsedConfig.verbalQuestions)
+          : [];
+          
+        const quantitativeQuestions = parsedConfig.quantitativeQuestions > 0
+          ? QuestionStore.getByType('quantitative').slice(0, parsedConfig.quantitativeQuestions)
+          : [];
         
-      // Combine questions
-      const allQuestions = [...verbalQuestions, ...quantitativeQuestions];
+        // Combine questions
+        allQuestions = [...verbalQuestions, ...quantitativeQuestions];
+      }
       
       if (allQuestions.length === 0) {
         alert('لا توجد أسئلة كافية للاختبار');
@@ -224,10 +248,31 @@ const TestPage: React.FC<TestPageProps> = ({ user, onFinish }) => {
     );
   }
 
+  // تحديد نوع الاختبار والقسم الحالي
+  let sectionNumber = 1;
+  let sectionText = `القسم ${currentQuestion.type === 'verbal' ? 'اللفظي' : 'الكمي'}`;
+  let testTitle = "اختبار القدرات";
+  
+  if (config.type === 'qiyas' && config.sections) {
+    // في حالة اختبار القياس، نحتاج لتحديد رقم القسم الحالي
+    let questionCount = 0;
+    for (let i = 0; i < config.sections.length; i++) {
+      const section = config.sections[i];
+      questionCount += section.questionsCount;
+      
+      if (testSession.currentQuestionIndex < questionCount) {
+        sectionNumber = i + 1;
+        sectionText = `القسم ${sectionNumber}: ${section.type === 'verbal' ? 'لفظي' : 'كمي'}`;
+        break;
+      }
+    }
+    testTitle = "اختبار قياس";
+  }
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-neutral-200">
       <TestContainer
-        title={`اختبار القدرات: ${currentQuestion.type === 'verbal' ? 'الجزء اللفظي' : 'الجزء الكمي'}`}
+        title={`${testTitle}: ${currentQuestion.type === 'verbal' ? 'الجزء اللفظي' : 'الجزء الكمي'}`}
         description={currentQuestion.type === 'verbal' ? 'اختبار مهارات الفهم اللفظي والتحليل اللغوي' : 'قياس قدراتك في التعامل مع الأرقام والرياضيات'}
         timeRemaining={formatTime(timeRemaining)}
         progress={{
@@ -235,7 +280,7 @@ const TestPage: React.FC<TestPageProps> = ({ user, onFinish }) => {
           total: testSession.questions.length,
           percent: progressPercent
         }}
-        section={`القسم ${currentQuestion.type === 'verbal' ? 'اللفظي' : 'الكمي'}`}
+        section={sectionText}
         question={currentQuestion}
         selectedAnswer={currentAnswer}
         showDebug={false}
