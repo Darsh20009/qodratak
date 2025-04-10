@@ -191,21 +191,26 @@ const TestResults: React.FC<TestResultsProps> = ({
         )}
 
         <div className="mt-8 flex justify-center gap-4">
-          {passed ? (
-            <button 
-              onClick={onNextTest}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md transition font-medium"
-            >
-              الاختبار التالي
-            </button>
-          ) : (
-            <button 
-              onClick={onRetry}
-              className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-md transition font-medium"
-            >
-              إعادة الاختبار
-            </button>
-          )}
+          <button 
+            onClick={onRetry}
+            className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-md transition font-medium"
+            disabled={passed}
+          >
+            إعادة الاختبار
+          </button>
+          <button 
+            onClick={onNextTest}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md transition font-medium"
+            disabled={!passed}
+          >
+            الاختبار التالي
+          </button>
+          <button 
+            onClick={onFinish}
+            className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-md transition font-medium"
+          >
+            العودة إلى الرئيسية
+          </button>
         </div>
       </div>
     </div>

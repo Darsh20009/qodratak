@@ -88,13 +88,6 @@ function Router() {
           <Login onLogin={handleLogin} />
         )}
       </Route>
-      <Route path="/study">
-        {user ? (
-          <StudyPage />
-        ) : (
-          <Login onLogin={handleLogin} />
-        )}
-      </Route>
       <Route component={NotFound} />
     </Switch>
   );
