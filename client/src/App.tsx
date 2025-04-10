@@ -9,7 +9,6 @@ import StudyPage from "@/pages/StudyPage";
 import StudentDashboard from "@/pages/StudentDashboard";
 import AdminPanel from "@/pages/AdminPanel";
 import TestPage from "@/pages/TestPage";
-import StudyPage from "@/pages/StudyPage";
 import { User, ActiveView } from "./lib/types";
 import { QuestionStore } from "./lib/questionStore";
 
@@ -86,6 +85,13 @@ function Router() {
       <Route path="/test">
         {user ? (
           <TestPage user={user} onFinish={() => setLocation('/dashboard')} />
+        ) : (
+          <Login onLogin={handleLogin} />
+        )}
+      </Route>
+      <Route path="/study">
+        {user ? (
+          <StudyPage />
         ) : (
           <Login onLogin={handleLogin} />
         )}
