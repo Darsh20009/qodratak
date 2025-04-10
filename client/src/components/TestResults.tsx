@@ -191,14 +191,15 @@ const TestResults: React.FC<TestResultsProps> = ({
         )}
 
         <div className="mt-8 flex justify-center gap-4">
-          {passed ? (
+          {passed && (
             <button 
               onClick={onNextTest}
               className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md transition font-medium"
             >
               الاختبار التالي
             </button>
-          ) : (
+          )}
+          {!passed && (
             <>
               <button 
                 onClick={onRetry}
