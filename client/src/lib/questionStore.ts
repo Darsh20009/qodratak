@@ -99,9 +99,34 @@ export const QuestionStore = {
   },
   
   // Get questions by type
-  getByType: (type: 'verbal' | 'quantitative'): Question[] => {
+  getByType: (type: 'verbal' | 'quantitative', userId: string): Question[] => {
     const { questions } = getStoreData();
-    return questions.filter(q => q.type === type);
+    const answeredKey = `answered_questions_${userId}`;
+    const answeredQuestions = JSON.parse(localStorage.getItem(answeredKey) || '[]');
+    
+    const availableQuestions = questions
+      .filter(q => q.type === type && !answeredQuestions.includes(q.id));
+    
+    // Randomize questions using Fisher-Yates shuffle
+    for (let i = availableQuestions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [availableQuestions[i], availableQuestions[j]] = [availableQuestions[j], availableQuestions[i]];
+    }
+    
+    return availableQuestions;
+  },
+
+  // Track answered questions
+  markQuestionsAsAnswered: (questionIds: number[], userId: string) => {
+    const answeredKey = `answered_questions_${userId}`;
+    const answeredQuestions = JSON.parse(localStorage.getItem(answeredKey) || '[]');
+    const updatedAnswered = [...new Set([...answeredQuestions, ...questionIds])];
+    localStorage.setItem(answeredKey, JSON.stringify(updatedAnswered));
+  },
+
+  // Reset answered questions for user
+  resetAnsweredQuestions: (userId: string) => {
+    localStorage.removeItem(`answered_questions_${userId}`);
   },
   
   // Get a question by ID
