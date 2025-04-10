@@ -8,6 +8,7 @@ import Login from "@/pages/Login";
 import StudentDashboard from "@/pages/StudentDashboard";
 import AdminPanel from "@/pages/AdminPanel";
 import TestPage from "@/pages/TestPage";
+import StudyPage from "@/pages/StudyPage";
 import { User, ActiveView } from "./lib/types";
 import { QuestionStore } from "./lib/questionStore";
 

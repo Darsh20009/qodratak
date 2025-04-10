@@ -22,6 +22,9 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ title, user, onLogout
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-medium mb-2">اختباراتك</h2>
+          <Link to="/study" className="text-blue-500 hover:text-blue-600">
+            تعلم الأسئلة
+          </Link>
           <p className="text-gray-700">اختر نوع الاختبار الذي تود أداءه</p>
         </div>
         <button 
