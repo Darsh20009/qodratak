@@ -1,4 +1,5 @@
 import { User } from '../lib/types';
+import { Link } from 'wouter';
 
 interface DashboardHeaderProps {
   title: string;

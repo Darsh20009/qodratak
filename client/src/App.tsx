@@ -5,6 +5,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
 import Login from "@/pages/Login";
+import StudyPage from "@/pages/StudyPage";
 import StudentDashboard from "@/pages/StudentDashboard";
 import AdminPanel from "@/pages/AdminPanel";
 import TestPage from "@/pages/TestPage";
