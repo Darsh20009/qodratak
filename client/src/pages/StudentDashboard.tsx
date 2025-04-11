@@ -29,11 +29,13 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) =
   
   const handleStartQiyasTest = () => {
     // القياس اختبار بتنسيق 7 أقسام (120 سؤال في 120 دقيقة)
-    // 3 أقسام أولى: 13 لفظي و 11 كمي في كل قسم (24 سؤال في 24 دقيقة)
-    // القسم الرابع: 11 كمي (11 سؤال في 11 دقيقة)
-    // القسم الخامس: 13 لفظي (13 سؤال في 13 دقيقة)
-    // القسم السادس: 11 كمي (11 سؤال في 11 دقيقة)
-    // القسم السابع: 13 لفظي (13 سؤال في 13 دقيقة)
+    // القسم الأول: 13 لفظي و 11 كمي (24 سؤال في 24 دقيقة)
+    // القسم الثاني: 13 لفظي و 11 كمي (24 سؤال في 24 دقيقة)
+    // القسم الثالث: 13 لفظي و 11 كمي (24 سؤال في 24 دقيقة)
+    // القسم الرابع: 13 لفظي (13 سؤال في 13 دقيقة)
+    // القسم الخامس: 11 كمي (11 سؤال في 11 دقيقة)
+    // القسم السادس: 13 لفظي (13 سؤال في 13 دقيقة)
+    // القسم السابع: 11 كمي (11 سؤال في 11 دقيقة)
     
     const qiyasConfig: TestConfig = {
       type: 'qiyas',
@@ -44,6 +46,15 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) =
         { id: 1, type: 'verbal', questionsCount: 13, duration: 13 },
         { id: 2, type: 'quantitative', questionsCount: 11, duration: 11 },
         { id: 3, type: 'verbal', questionsCount: 13, duration: 13 },
+        { id: 4, type: 'quantitative', questionsCount: 11, duration: 11 },
+        { id: 5, type: 'verbal', questionsCount: 13, duration: 13 },
+        { id: 6, type: 'quantitative', questionsCount: 11, duration: 11 },
+        { id: 7, type: 'verbal', questionsCount: 13, duration: 13 },
+        { id: 8, type: 'quantitative', questionsCount: 11, duration: 11 },
+        { id: 9, type: 'verbal', questionsCount: 13, duration: 13 },
+        { id: 10, type: 'quantitative', questionsCount: 11, duration: 11 }
+      ]
+    };ion: 13 },
         { id: 4, type: 'quantitative', questionsCount: 11, duration: 11 },
         { id: 5, type: 'verbal', questionsCount: 13, duration: 13 },
         { id: 6, type: 'quantitative', questionsCount: 11, duration: 11 },
