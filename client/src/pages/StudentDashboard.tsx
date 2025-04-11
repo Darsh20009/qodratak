@@ -53,12 +53,11 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) =
         { id: 8, type: 'quantitative', questionsCount: 11, duration: 11 },
         { id: 9, type: 'verbal', questionsCount: 13, duration: 13 },
         { id: 10, type: 'quantitative', questionsCount: 11, duration: 11 }
-      ]
-    };ion: 13 },
-        { id: 4, type: 'quantitative', questionsCount: 11, duration: 11 },
-        { id: 5, type: 'verbal', questionsCount: 13, duration: 13 },
-        { id: 6, type: 'quantitative', questionsCount: 11, duration: 11 },
-        { id: 7, type: 'verbal', questionsCount: 13, duration: 13 }
+      ],
+      verbalQuestions: 65,
+      quantitativeQuestions: 55,
+      duration: 120
+    };
       ]
     };
     
