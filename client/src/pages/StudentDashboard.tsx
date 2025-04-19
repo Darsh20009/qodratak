@@ -14,17 +14,32 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onLogout }) =
   const [showCustomSetup, setShowCustomSetup] = useState(false);
   const [, setLocation] = useLocation();
 
-  const handleStartTest = (testType: 'verbal' | 'quantitative') => {
-    const config: TestConfig = {
-      type: 'standard',
-      verbalQuestions: testType === 'verbal' ? 20 : 0,
-      quantitativeQuestions: testType === 'quantitative' ? 20 : 0,
-      duration: 30
+  const handleStartTest = () => {
+    const qiyasConfig: TestConfig = {
+      type: 'verbal',
+      verbalQuestions: 65,
+      duration: 65,
+      sections: [
+        { id: 1, type: 'verbal', questionsCount: 13, duration: 13 },
+        { id: 2, type: 'verbal', questionsCount: 13, duration: 13 },
+        { id: 3, type: 'verbal', questionsCount: 13, duration: 13 },
+        { id: 4, type: 'verbal', questionsCount: 13, duration: 13 },
+        { id: 5, type: 'verbal', questionsCount: 13, duration: 13 },
+      ]
     };
-
-    localStorage.setItem('qudratak_test_config', JSON.stringify(config));
-    setLocation('/test');
-  };
+    const handleStartTest = () => {
+      const qiyasConfig: TestConfig = {
+        type: 'quantitative',
+        quantitativeQuestions: 55,
+        duration: 55,
+        sections: [
+          { id: 1, type: 'quantitative', questionsCount: 11, duration: 11 },
+          { id: 2, type: 'quantitative', questionsCount: 11, duration: 11 },
+          { id: 3, type: 'quantitative', questionsCount: 11, duration: 11 },
+          { id: 4, type: 'quantitative', questionsCount: 11, duration: 11 },
+          { id: 5, type: 'quantitative', questionsCount: 11, duration: 11 }
+        ]
+      };
 
   const handleStartQiyasTest = () => {
     const qiyasConfig: TestConfig = {
