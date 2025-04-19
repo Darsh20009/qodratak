@@ -7041,7 +7041,7 @@
       "id": 617,
       "text": "إذا كانت قيمة X في المعادلة 4X - 7 = 13، فما هي قيمة X؟",
       "options": ["5", "6", "7", "8"],
-      "correctOptionIndex": 1
+      "correctOptionIndex": 0
     },
     {
       "id": 618,
@@ -8697,7 +8697,7 @@
       "id": 894,
       "text": "إذا كانت المعادلة 4x + 6 = 18، فما قيمة x؟",
       "options": ["3", "2", "4", "5"],
-      "correctOptionIndex": 1
+      "correctOptionIndex": 0
     },
     {
       "id": 895,
@@ -9219,7 +9219,7 @@
       "id": 986,
       "text": "إذا كانت لديك معادلة 4x - 8 = 12، فما هي قيمة x؟ (نعم، نعلم أن هذا صعب لكنك تستطيع!)",
       "options": ["x = 5", "x = 4", "x = 6", "x = 3"],
-      "correctOptionIndex": 2
+      "correctOptionIndex": 0
     },
     {
       "id": 987,
